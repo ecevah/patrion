@@ -1,7 +1,7 @@
 const mqtt = require("mqtt");
 const fs = require("fs");
 
-const brokerUrl = "mqtts://localhost:8883";
+const brokerUrl = "mqtts://192.168.1.7:8883";
 const topic = "10:20:30/data";
 
 const options = {
