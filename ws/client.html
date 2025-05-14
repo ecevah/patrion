@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>WebSocket MQTT İzleyici</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    #log { background: #222; color: #0f0; padding: 1em; height: 300px; overflow-y: auto; }
+    #status { margin-bottom: 1em; }
+    input, button { font-size: 1em; }
+  </style>
+</head>
+<body>
+  <h2>WebSocket MQTT İzleyici</h2>
+  <div id="status">Bağlı değil</div>
+  <input id="token" type="text" placeholder="JWT Token" size="80" />
+  <button id="connectBtn">Bağlan</button>
+  <div id="log"></div>
+
+  <script>
+    let ws;
+    const logDiv = document.getElementById('log');
+    const statusDiv = document.getElementById('status');
+    const connectBtn = document.getElementById('connectBtn');
+    const tokenInput = document.getElementById('token');
+
+    function log(msg) {
+      logDiv.innerHTML += msg + '<br>';
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    connectBtn.onclick = function() {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close();
+        connectBtn.textContent = 'Bağlan';
+        statusDiv.textContent = 'Bağlı değil';
+        return;
+      }
+      const token = tokenInput.value.trim();
+      if (!token) {
+        alert('Lütfen JWT token girin!');
+        return;
+      }
+      ws = new WebSocket('ws://localhost:8080');
+      statusDiv.textContent = 'Bağlanıyor...';
+      ws.onopen = () => {
+        statusDiv.textContent = 'Bağlandı';
+        connectBtn.textContent = 'Bağlantıyı Kes';
+        ws.send(JSON.stringify({ token }));
+        log('<b>Sunucuya bağlanıldı, token gönderildi.</b>');
+      };
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.error) {
+            log('<span style="color:red">Hata: ' + data.error + '</span>');
+          } else if (data.success) {
+            log('<b>Başarılı! Dinlenen topicler:</b> ' + data.topics.join(", "));
+          } else if (data.topic) {
+            log('<b>[' + data.topic + ']</b> ' + data.payload);
+          } else {
+            log('<i>' + event.data + '</i>');
+          }
+        } catch (e) {
+          log('<i>' + event.data + '</i>');
+        }
+      };
+      ws.onclose = () => {
+        statusDiv.textContent = 'Bağlı değil';
+        connectBtn.textContent = 'Bağlan';
+        log('<b>Bağlantı kapandı.</b>');
+      };
+      ws.onerror = (err) => {
+        log('<span style="color:red">WebSocket hatası!</span>');
+      };
+    };
+  </script>
+</body>
+</html> 

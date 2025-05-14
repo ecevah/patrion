@@ -1,0 +1,16 @@
+{
+  "name": "mqtt-broker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "@influxdata/influxdb-client": "^1.35.0",
+    "aedes": "^0.51.2",
+    "mqtt": "^4.3.7",
+    "net": "^1.0.2",
+    "nodemon": "^3.1.10"
+  }
+}
