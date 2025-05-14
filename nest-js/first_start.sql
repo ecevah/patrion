@@ -4,6 +4,9 @@ ALTER TABLE "role" DROP CONSTRAINT IF EXISTS "FK_90be4056afb603e3142d6ab1a0f";
 ALTER TABLE "company" DROP CONSTRAINT IF EXISTS "FK_3bf47449928f5235011484b64e5";
 ALTER TABLE "company" DROP CONSTRAINT IF EXISTS "FK_ac7df80d15733f2df1187953d33";
 
+ALTER TABLE "user" DROP CONSTRAINT IF EXISTS "FK_3d6ba1e46902fdbd19180c35724";
+ALTER TABLE "user" DROP CONSTRAINT IF EXISTS "FK_b68145ca0b7a9d1d503625385a9";
+
 
 INSERT INTO "role" (
     role, can_add_company, can_add_user, can_assign_device, can_view_data, can_view_log, can_manage_iot, create_at, create_by, update_at, update_by

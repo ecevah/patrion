@@ -1,19 +1,22 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include <EEPROM.h>
+#include <Adafruit_Sensor.h>
 #include <DHT.h>
+#include <DHT_U.h>
 
 #define EEPROM_SIZE 96
 #define SSID_ADDR 0
 #define PASS_ADDR 32
-#define DHTPIN 15      // DHT11 data pin
-#define DHTTYPE DHT11  // DHT11 sensör tipi
+#define DHTPIN 15     // DHT11 sensörünün bağlı olduğu pin
+#define DHTTYPE DHT11 // DHT11 sensör tipi
 
 WebServer server(80);
 
 String ssid = "";
 String pass = "";
-DHT dht(DHTPIN, DHTTYPE);
+DHT_Unified dht(DHTPIN, DHTTYPE);
+uint32_t delayMS = 2000; // Okuma aralığı (ms)
 
 String getNetworksList() {
   int n = WiFi.scanNetworks();
@@ -91,6 +94,28 @@ void setup() {
   EEPROM.begin(EEPROM_SIZE);
   dht.begin();
 
+  // Sensör detaylarını seri porttan yazdır
+  sensor_t sensor;
+  dht.temperature().getSensor(&sensor);
+  Serial.println(F("------------------------------------"));
+  Serial.println(F("Sıcaklık Sensörü"));
+  Serial.print  (F("Sensör Tipi: ")); Serial.println(sensor.name);
+  Serial.print  (F("Driver Versiyon: ")); Serial.println(sensor.version);
+  Serial.print  (F("Unique ID:   ")); Serial.println(sensor.sensor_id);
+  Serial.print  (F("Max Değer:   ")); Serial.print(sensor.max_value); Serial.println(F("°C"));
+  Serial.print  (F("Min Değer:   ")); Serial.print(sensor.min_value); Serial.println(F("°C"));
+  Serial.print  (F("Çözünürlük:  ")); Serial.print(sensor.resolution); Serial.println(F("°C"));
+  Serial.println(F("------------------------------------"));
+  dht.humidity().getSensor(&sensor);
+  Serial.println(F("Nem Sensörü"));
+  Serial.print  (F("Sensör Tipi: ")); Serial.println(sensor.name);
+  Serial.print  (F("Driver Versiyon: ")); Serial.println(sensor.version);
+  Serial.print  (F("Unique ID:   ")); Serial.println(sensor.sensor_id);
+  Serial.print  (F("Max Değer:   ")); Serial.print(sensor.max_value); Serial.println(F("%"));
+  Serial.print  (F("Min Değer:   ")); Serial.print(sensor.min_value); Serial.println(F("%"));
+  Serial.print  (F("Çözünürlük:  ")); Serial.print(sensor.resolution); Serial.println(F("%"));
+  Serial.println(F("------------------------------------"));
+
   int tryCount = 0;
   bool connected = false;
   while (tryCount < 3) {
@@ -112,20 +137,25 @@ void loop() {
     server.handleClient();
   }
 
-  // Her 2 saniyede bir DHT11 oku ve konsola yaz
   static unsigned long lastDHT = 0;
-  if (millis() - lastDHT > 2000) {
+  if (millis() - lastDHT > delayMS) {
     lastDHT = millis();
-    float h = dht.readHumidity();
-    float t = dht.readTemperature();
-    if (isnan(h) || isnan(t)) {
-      Serial.println("DHT11 okunamadı!");
+    sensors_event_t event;
+    dht.temperature().getEvent(&event);
+    if (isnan(event.temperature)) {
+      Serial.println(F("Sıcaklık okuma hatası!"));
     } else {
-      Serial.print("Sıcaklık: ");
-      Serial.print(t);
-      Serial.print(" °C, Nem: ");
-      Serial.print(h);
-      Serial.println(" %");
+      Serial.print(F("Sıcaklık: "));
+      Serial.print(event.temperature);
+      Serial.println(F("°C"));
+    }
+    dht.humidity().getEvent(&event);
+    if (isnan(event.relative_humidity)) {
+      Serial.println(F("Nem okuma hatası!"));
+    } else {
+      Serial.print(F("Nem: "));
+      Serial.print(event.relative_humidity);
+      Serial.println(F("%"));
     }
   }
 }
