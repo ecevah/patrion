@@ -70,17 +70,23 @@ export class UserDeviceAccessService {
   }
 
   // Tek update fonksiyonu
-  async update(id: number, deviceId: number, userId: number, companyId: number, reqUser: any) {
+  async update(id: number, dto: UpdateUserDeviceAccessDto, companyId: number, reqUser: any) {
     let uda;
     if (reqUser.role === 'System Admin') {
-      uda = await this.udaRepo.findOne({ where: { id } });
+      uda = await this.udaRepo.findOne({ where: { id }, relations: ['user', 'device'] });
       if (!uda) throw new NotFoundException('UserDeviceAccess not found');
-      const device = await this.deviceRepo.findOne({ where: { id: deviceId } });
-      const user = await this.userRepo.findOne({ where: { id: userId } });
-      if (!device) throw new NotFoundException('Device not found');
-      if (!user) throw new NotFoundException('User not found');
-      uda.device = device;
-      uda.user = user;
+      
+      if (dto.deviceId) {
+        const device = await this.deviceRepo.findOne({ where: { id: dto.deviceId } });
+        if (!device) throw new NotFoundException('Device not found');
+        uda.device = device;
+      }
+      
+      if (dto.userId) {
+        const user = await this.userRepo.findOne({ where: { id: dto.userId } });
+        if (!user) throw new NotFoundException('User not found');
+        uda.user = user;
+      }
     } else {
       uda = await this.udaRepo.createQueryBuilder('uda')
         .leftJoinAndSelect('uda.user', 'user')
@@ -90,14 +96,81 @@ export class UserDeviceAccessService {
         .andWhere('company.id = :companyId', { companyId })
         .getOne();
       if (!uda) throw new NotFoundException('UserDeviceAccess not found in this company');
-      const device = await this.deviceRepo.findOne({ where: { id: deviceId, company: { id: companyId } } });
-      const user = await this.userRepo.findOne({ where: { id: userId, company: { id: companyId } } });
-      if (!device) throw new NotFoundException('Device not found in this company');
-      if (!user) throw new NotFoundException('User not found in this company');
-      uda.device = device;
-      uda.user = user;
+      
+      if (dto.deviceId) {
+        const device = await this.deviceRepo.findOne({ where: { id: dto.deviceId, company: { id: companyId } } });
+        if (!device) throw new NotFoundException('Device not found in this company');
+        uda.device = device;
+      }
+      
+      if (dto.userId) {
+        const user = await this.userRepo.findOne({ where: { id: dto.userId, company: { id: companyId } } });
+        if (!user) throw new NotFoundException('User not found in this company');
+        uda.user = user;
+      }
     }
+    
     uda.update_by = { id: reqUser.id } as User;
     return this.udaRepo.save(uda);
+  }
+
+  // Silme fonksiyonu
+  async delete(id: number, companyId: number, reqUser: any) {
+    let uda;
+    if (reqUser.role === 'System Admin') {
+      uda = await this.udaRepo.findOne({ where: { id }, relations: ['user', 'device'] });
+      if (!uda) throw new NotFoundException('UserDeviceAccess not found');
+    } else {
+      uda = await this.udaRepo.createQueryBuilder('uda')
+        .leftJoinAndSelect('uda.user', 'user')
+        .leftJoinAndSelect('uda.device', 'device')
+        .leftJoin('device.company', 'company')
+        .where('uda.id = :id', { id })
+        .andWhere('company.id = :companyId', { companyId })
+        .getOne();
+      if (!uda) throw new NotFoundException('UserDeviceAccess not found in this company');
+    }
+    
+    await this.udaRepo.remove(uda);
+    return { message: 'Kullanıcı cihaz erişimi başarıyla silindi' };
+  }
+
+  // User ID ile erişimleri getirme fonksiyonu
+  async getByUserId(userId: number, companyId: number, reqUser: any) {
+    if (reqUser.role === 'System Admin') {
+      const accesses = await this.udaRepo.find({ 
+        where: { user: { id: userId } },
+        relations: ['user', 'device', 'device.company']
+      });
+      
+      if (accesses.length === 0) {
+        throw new NotFoundException(`${userId} ID'li kullanıcı için cihaz erişimi bulunamadı`);
+      }
+      
+      return accesses;
+    } else {
+      // Şirket kontrolü
+      const user = await this.userRepo.findOne({ 
+        where: { id: userId, company: { id: companyId } }
+      });
+      
+      if (!user) {
+        throw new NotFoundException(`${userId} ID'li kullanıcı bu şirkette bulunamadı`);
+      }
+      
+      const accesses = await this.udaRepo.createQueryBuilder('uda')
+        .leftJoinAndSelect('uda.user', 'user')
+        .leftJoinAndSelect('uda.device', 'device')
+        .leftJoinAndSelect('device.company', 'company')
+        .where('user.id = :userId', { userId })
+        .andWhere('company.id = :companyId', { companyId })
+        .getMany();
+      
+      if (accesses.length === 0) {
+        throw new NotFoundException(`${userId} ID'li kullanıcı için cihaz erişimi bulunamadı`);
+      }
+      
+      return accesses;
+    }
   }
 } 

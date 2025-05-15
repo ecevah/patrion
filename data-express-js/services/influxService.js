@@ -44,6 +44,7 @@ async function queryMacData(mac, range = "1h", page = 1, limit = 10) {
   const offset = (page - 1) * limit;
   let fluxQuery;
   let countQuery;
+
   if (range === "all") {
     fluxQuery = `
       from(bucket: "${INFLUX_BUCKET}")
@@ -63,21 +64,24 @@ async function queryMacData(mac, range = "1h", page = 1, limit = 10) {
     `;
   } else {
     const { lower, upper } = getEpochRange(range);
+
+    // Timestamp'i doğrudan "_time" sütunu ile karşılaştırarak sorgulama yapalım
+    const start = new Date(lower * 1000).toISOString();
+    const stop = new Date(upper * 1000).toISOString();
+
     fluxQuery = `
       from(bucket: "${INFLUX_BUCKET}")
-        |> range(start: -10y)
+        |> range(start: ${start}, stop: ${stop})
         |> filter(fn: (r) => r[\"_measurement\"] == \"sensor_data\")
         |> filter(fn: (r) => r[\"topic\"] == \"${mac}\")
-        |> filter(fn: (r) => exists r[\"timestamp\"] and r[\"timestamp\"] >= ${lower} and r[\"timestamp\"] <= ${upper})
         |> sort(columns: [\"_time\"], desc: true)
         |> limit(n: ${limit}, offset: ${offset})
     `;
     countQuery = `
       from(bucket: "${INFLUX_BUCKET}")
-        |> range(start: -10y)
+        |> range(start: ${start}, stop: ${stop})
         |> filter(fn: (r) => r[\"_measurement\"] == \"sensor_data\")
         |> filter(fn: (r) => r[\"topic\"] == \"${mac}\")
-        |> filter(fn: (r) => exists r[\"timestamp\"] and r[\"timestamp\"] >= ${lower} and r[\"timestamp\"] <= ${upper})
         |> count()
         |> keep(columns: [\"_value\"])
     `;

@@ -2,6 +2,7 @@ const aedes = require("aedes")();
 const fs = require("fs");
 const tls = require("tls");
 const { InfluxDB, Point } = require("@influxdata/influxdb-client");
+const os = require("os");
 
 const PORT = 8883;
 
@@ -25,8 +26,22 @@ const INFLUX_BUCKET = "patrion";
 const influxDB = new InfluxDB({ url: INFLUX_URL, token: INFLUX_TOKEN });
 const writeApi = influxDB.getWriteApi(INFLUX_ORG, INFLUX_BUCKET, "ns");
 
+function getLocalIP() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === "IPv4" && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return "localhost";
+}
+
 server.listen(PORT, function () {
-  console.log("MQTT broker TLS ile 8883 portunda çalışıyor");
+  const localIP = getLocalIP();
+  console.log(`MQTT broker TLS ile ${PORT} portunda çalışıyor`);
+  console.log(`Ağ içi IP adresi: ${localIP}`);
 });
 
 aedes.on("client", function (client) {

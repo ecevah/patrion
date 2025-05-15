@@ -1,7 +1,7 @@
 const mqtt = require("mqtt");
 const fs = require("fs");
 
-const brokerUrl = "mqtts://192.168.1.7:8883";
+const brokerUrl = "mqtts://localhost:8883";
 const topic = "10:20:30/data";
 
 const options = {
@@ -18,9 +18,9 @@ client.on("connect", () => {
   setInterval(() => {
     const message = {
       sensor_id: "temp_sensor_01",
-      timestamp: 1710772800, // örnek sabit zaman damgası
-      temperature: 25.4,
-      humidity: 55.2,
+      timestamp: Math.floor(Date.now() / 1000), // anlık zaman damgası
+      temperature: (20 + Math.random() * 10).toFixed(2), // 20-30 arası rastgele sıcaklık
+      humidity: (40 + Math.random() * 20).toFixed(2), // 40-60 arası rastgele nem
     };
     client.publish(topic, JSON.stringify(message));
     console.log(`Mesaj gönderildi: ${JSON.stringify(message)}`);

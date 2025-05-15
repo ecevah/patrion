@@ -217,6 +217,10 @@ export class DeviceService {
         }
       }
       
+      // Önce bu cihazla ilişkili tüm kullanıcı erişimlerini sil
+      await this.userDeviceAccessRepo.delete({ device: { id: device.id } });
+      
+      // Sonra cihazı sil
       await this.deviceRepo.remove(device);
       return { message: 'Cihaz başarıyla silindi' };
     } catch (error) {

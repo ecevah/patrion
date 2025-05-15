@@ -12,8 +12,12 @@ export class CompanyService {
     private readonly companyRepo: Repository<Company>,
   ) {}
 
-  async create(dto: CreateCompanyDto) {
-    const company = this.companyRepo.create(dto);
+  async create(dto: CreateCompanyDto, userId: number) {
+    const company = this.companyRepo.create({
+      ...dto,
+      create_by: { id: userId } as any,
+      update_by: { id: userId } as any,
+    });
     return this.companyRepo.save(company);
   }
 
@@ -27,10 +31,11 @@ export class CompanyService {
     return company;
   }
 
-  async update(id: number, dto: UpdateCompanyDto) {
+  async update(id: number, dto: UpdateCompanyDto, userId: number) {
     const company = await this.companyRepo.findOne({ where: { id } });
     if (!company) throw new NotFoundException('Company not found');
     Object.assign(company, dto);
+    company.update_by = { id: userId } as any;
     return this.companyRepo.save(company);
   }
 
