@@ -16,10 +16,26 @@ export class RequestLoggerMiddleware implements NestMiddleware {
     const userRef = userId ? { id: userId } as User : undefined;
     
     const actionType = req.method + ' ' + req.originalUrl;
+    let logBody = req.body;
+    // Hassas endpointlerde body'yi maskele veya çıkar
+    if (
+      (req.method === 'POST' && req.originalUrl === '/auth/login') ||
+      (req.method === 'POST' && req.originalUrl === '/auth/forgot-password') ||
+      (req.method === 'POST' && req.originalUrl === '/auth/reset-password')
+    ) {
+      // Sadece email veya token gibi hassas olmayan alanları bırak
+      if (req.originalUrl === '/auth/login') {
+        logBody = { email: req.body?.email };
+      } else if (req.originalUrl === '/auth/forgot-password') {
+        logBody = { email: req.body?.email };
+      } else if (req.originalUrl === '/auth/reset-password') {
+        logBody = { token: req.body?.token ? '[MASKED]' : undefined };
+      }
+    }
     const details = JSON.stringify({
       params: req.params,
       query: req.query,
-      body: req.body,
+      body: logBody,
     });
 
     // User bilgisini daha detaylı logla

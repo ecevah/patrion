@@ -9,7 +9,7 @@ import * as jwt from 'jsonwebtoken';
 import { SuccessResponse, ErrorResponse } from '../../common/response.dto';
 import * as bcrypt from 'bcrypt';
 import Redis from 'ioredis';
-
+import * as nodemailer from 'nodemailer';
 @Injectable()
 export class UserAuthService {
   constructor(
@@ -70,9 +70,34 @@ export class UserAuthService {
     }
     // Reset token oluştur
     const resetToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
-    // Burada email gönderme işlemi yapılacak (şimdilik console.log)
-    console.log(`Şifre sıfırlama tokeni: ${resetToken}`);
-    // TODO: Gerçek email gönderimi entegre edilecek
+    
+    // Şifre sıfırlama linki
+    const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+
+    // Nodemailer ile mail gönder
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: 'Şifre Sıfırlama Talebi',
+      html: `<p>Şifre sıfırlama talebinde bulundunuz. Şifrenizi sıfırlamak için aşağıdaki linke tıklayın:</p>
+             <a href="${resetUrl}">${resetUrl}</a>
+             <p>Bu link 1 saat geçerlidir.</p>`
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (err) {
+      console.error('Mail gönderilemedi:', err);
+      return new ErrorResponse('Şifre sıfırlama maili gönderilemedi.', 'Mail error');
+    }
     return new SuccessResponse('Şifre sıfırlama maili gönderildi.');
   }
 
