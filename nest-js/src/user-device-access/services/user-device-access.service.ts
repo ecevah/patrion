@@ -18,9 +18,9 @@ export class UserDeviceAccessService {
     private readonly deviceRepo: Repository<Device>,
   ) {}
 
-  // Tek create fonksiyonu (role JWT'den alınacak)
+  
   async create(deviceId: number, userId: number, companyId: number, reqUser: any) {
-    // Admin ise companyId parametrelerden, değilse JWT'den
+    
     const isAdmin = reqUser.role === 'System Admin';
     let device, user;
     if (isAdmin) {
@@ -36,7 +36,7 @@ export class UserDeviceAccessService {
     return this.udaRepo.save(uda);
   }
 
-  // Tek getAll fonksiyonu
+  
   async getAll(companyId: number, reqUser: any) {
     if (reqUser.role === 'System Admin') {
       return this.udaRepo.find({ relations: ['user', 'device'] });
@@ -50,7 +50,7 @@ export class UserDeviceAccessService {
     }
   }
 
-  // Tek getById fonksiyonu
+  
   async getById(id: number, companyId: number, reqUser: any) {
     if (reqUser.role === 'System Admin') {
       const uda = await this.udaRepo.findOne({ where: { id }, relations: ['user', 'device'] });
@@ -69,7 +69,7 @@ export class UserDeviceAccessService {
     }
   }
 
-  // Tek update fonksiyonu
+  
   async update(id: number, dto: UpdateUserDeviceAccessDto, companyId: number, reqUser: any) {
     let uda;
     if (reqUser.role === 'System Admin') {
@@ -114,7 +114,7 @@ export class UserDeviceAccessService {
     return this.udaRepo.save(uda);
   }
 
-  // Silme fonksiyonu
+  
   async delete(id: number, companyId: number, reqUser: any) {
     let uda;
     if (reqUser.role === 'System Admin') {
@@ -135,7 +135,7 @@ export class UserDeviceAccessService {
     return { message: 'Kullanıcı cihaz erişimi başarıyla silindi' };
   }
 
-  // User ID ile erişimleri getirme fonksiyonu
+  
   async getByUserId(userId: number, companyId: number, reqUser: any) {
     if (reqUser.role === 'System Admin') {
       const accesses = await this.udaRepo.find({ 
@@ -149,7 +149,7 @@ export class UserDeviceAccessService {
       
       return accesses;
     } else {
-      // Şirket kontrolü
+      
       const user = await this.userRepo.findOne({ 
         where: { id: userId, company: { id: companyId } }
       });

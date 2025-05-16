@@ -33,7 +33,7 @@ export class DeviceController {
   @Permissions('can_assign_device', 'can_view_data')
   async getAuthorizedDevices(@Req() req, @Query('page') page: number = 1, @Query('limit') limit: number = 10) {
     try {
-      // Kullanıcı kontrolü
+      
       if (!req.user) {
         console.error('User object not found in request. AuthMiddleware might not be working properly.');
         throw new UnauthorizedException('Bu endpoint için giriş yapmanız gerekiyor');
@@ -141,16 +141,16 @@ export class DeviceController {
       throw new BadRequestException('MAC adresi gereklidir');
     }
     const user = req.user;
-    // MAC adresi sistemde kayıtlı mı?
+    
     const device = await this.deviceService.findDeviceByMac(mac);
     if (!device) {
       return new SuccessResponse('MAC adresi sistemde kayıtlı değil.', { assigned: false });
     }
-    // System Admin veya can_assign_device yetkisi olanlar için sadece sistemde kayıtlıysa true
+    
     if (user.role === 'System Admin' || user.permissions.can_assign_device) {
       return new SuccessResponse('MAC adresi erişime açık', { assigned: true });
     }
-    // Kullanıcıya atanmış cihazlar arasında bu MAC var mı? (birebir, case-insensitive)
+    
     const userDeviceAccesses = await this.deviceService.getUserDeviceAccesses(user.id);
     const isAssigned = userDeviceAccesses.some(access =>
       access.device.mac && access.device.mac.toLowerCase() === mac.toLowerCase()

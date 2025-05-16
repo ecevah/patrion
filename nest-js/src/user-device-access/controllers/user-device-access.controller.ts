@@ -8,7 +8,7 @@ import { UpdateUserDeviceAccessDto } from '../dto/update-user-device-access.dto'
 export class UserDeviceAccessController {
   constructor(private readonly udaService: UserDeviceAccessService) {}
 
-  // Tek create endpointi
+  
   @Post('create/:deviceId/:userId')
   @Permission('can_assign_device')
   async create(@Param('deviceId') deviceId: number, @Param('userId') userId: number, @Req() req) {
@@ -16,7 +16,7 @@ export class UserDeviceAccessController {
     return new SuccessResponse('Kullanıcı cihaz erişimi başarıyla oluşturuldu', access);
   }
 
-  // Tek getAll endpointi
+  
   @Get('all')
   @Permission('can_assign_device')
   async getAll(@Req() req) {
@@ -24,7 +24,7 @@ export class UserDeviceAccessController {
     return new SuccessResponse('Kullanıcı cihaz erişimleri başarıyla listelendi', accesses);
   }
 
-  // User ID ile erişimleri getirme endpointi
+  
   @Get('user/:userId')
   @Permission('can_assign_device')
   async getByUserId(@Param('userId') userId: number, @Req() req) {
@@ -32,7 +32,7 @@ export class UserDeviceAccessController {
     return new SuccessResponse(`${userId} ID'li kullanıcı için cihaz erişimleri listelendi`, accesses);
   }
 
-  // Tek getById endpointi
+  
   @Get(':id')
   @Permission('can_assign_device')
   async getById(@Param('id') id: number, @Req() req) {
@@ -40,7 +40,7 @@ export class UserDeviceAccessController {
     return new SuccessResponse('Kullanıcı cihaz erişimi başarıyla bulundu', access);
   }
 
-  // Düzenlenen update endpointi
+  
   @Patch(':id')
   @Permission('can_assign_device')
   async update(@Param('id') id: number, @Body() dto: UpdateUserDeviceAccessDto, @Req() req) {
@@ -48,7 +48,7 @@ export class UserDeviceAccessController {
     return new SuccessResponse('Kullanıcı cihaz erişimi başarıyla güncellendi', access);
   }
 
-  // Silme endpointi
+  
   @Delete(':id')
   @Permission('can_assign_device')
   async delete(@Param('id') id: number, @Req() req) {

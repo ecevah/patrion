@@ -20,7 +20,7 @@ export class UserAuthService {
   private readonly redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
 
   async login(dto: LoginDto) {
-    // Rate limiting: Son 5 dakikada 5 başarısız deneme varsa engelle
+    
     const failKey = `login_fail:${dto.email}`;
     const failCount = parseInt(await this.redis.get(failKey) || '0', 10);
     if (failCount >= 5) {
@@ -37,16 +37,16 @@ export class UserAuthService {
       return new ErrorResponse('Giriş başarısız', 'Invalid credentials');
     }
     
-    // Şifre kontrol bcrypt ile
+    
     const isPasswordValid = await bcrypt.compare(dto.password, userWithRole.password);
     if (!isPasswordValid) {
       await this.redis.multi().incr(failKey).expire(failKey, 300).exec();
       return new ErrorResponse('Giriş başarısız', 'Invalid credentials');
     }
-    // Başarılı girişte sayacı sıfırla
+    
     await this.redis.del(failKey);
     
-    // JWT oluştur
+    
     const token = jwt.sign({
       userId: userWithRole.id,
       username: userWithRole.username,
@@ -68,13 +68,13 @@ export class UserAuthService {
     if (!user) {
       return new ErrorResponse('Kullanıcı bulunamadı', 'User not found');
     }
-    // Reset token oluştur
+    
     const resetToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
     
-    // Şifre sıfırlama linki
+    
     const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
 
-    // Nodemailer ile mail gönder
+    
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -112,13 +112,13 @@ export class UserAuthService {
     if (!user) {
       return new ErrorResponse('Kullanıcı bulunamadı', 'User not found');
     }
-    // Şifre politikası kontrolü
+    
     const password = dto.newPassword;
     const passwordPolicy = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
     if (!passwordPolicy.test(password)) {
       return new ErrorResponse('Şifre en az 8 karakter, 1 büyük harf, 1 küçük harf, 1 rakam ve 1 özel karakter içermelidir.', 'Password policy error');
     }
-    // Şifreyi hash'leyerek kaydet
+    
     user.password = await bcrypt.hash(dto.newPassword, 10);
     await this.userRepo.save(user);
     return new SuccessResponse('Şifre başarıyla güncellendi.');

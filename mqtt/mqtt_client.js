@@ -18,13 +18,13 @@ client.on("connect", () => {
   setInterval(() => {
     const message = {
       sensor_id: "temp_sensor_01",
-      timestamp: Math.floor(Date.now() / 1000), // anlık zaman damgası
-      temperature: (20 + Math.random() * 10).toFixed(2), // 20-30 arası rastgele sıcaklık
-      humidity: (40 + Math.random() * 20).toFixed(2), // 40-60 arası rastgele nem
+      timestamp: Math.floor(Date.now() / 1000),
+      temperature: (20 + Math.random() * 10).toFixed(2),
+      humidity: (40 + Math.random() * 20).toFixed(2),
     };
     client.publish(topic, JSON.stringify(message));
     console.log(`Mesaj gönderildi: ${JSON.stringify(message)}`);
-  }, 10000); // 10 saniye
+  }, 10000);
 });
 
 client.on("error", (err) => {

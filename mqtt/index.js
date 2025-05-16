@@ -16,7 +16,6 @@ const options = {
 
 const server = tls.createServer(options, aedes.handle);
 
-// InfluxDB 2.x bağlantı ayarları (örnek değerler, kendi bilgilerinle değiştir)
 const INFLUX_URL = "http://localhost:8086";
 const INFLUX_TOKEN =
   "JE2SqvCqG1hZa3mNcKznquR3ysEI7HuxDMcDhoUQLqvqKf5Pphoex8D7GRBAcUq9k5h6HQ1qDXZkgy_o5fgNiA==";

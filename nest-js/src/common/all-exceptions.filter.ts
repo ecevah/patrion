@@ -34,14 +34,14 @@ export class AllExceptionsFilter implements ExceptionFilter {
       errorDetail = exception.stack;
     }
 
-    // ErrorResponse formatında dön
+    
     const errorResponse = new ErrorResponse(
       message, 
       errorCode,
       errorDetail
     );
 
-    // Log exception
+    
     console.error(`Exception caught at ${request.method} ${request.url}:`, exception);
 
     response

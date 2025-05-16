@@ -9,10 +9,10 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap');
   const app = await NestFactory.create(AppModule);
   
-  // Global exception filter'ı uygula
+  
   app.useGlobalFilters(new AllExceptionsFilter());
   
-  // CORS ayarları
+  
   app.enableCors();
   
   const port = process.env.PORT ?? 3000;
@@ -21,9 +21,9 @@ async function bootstrap() {
   console.log("\n=== Sunucu Durumu ===");
   console.log(`🚀 Server çalışıyor: http://localhost:${port}`);
   console.log("============================\n");
-  // Database connection status
+  
   try {
-    // Get TypeORM DataSource from Nest app (already initialized)
+    
     const dataSource = app.get(DataSource);
 
     console.log("\n=== Veritabanı Durumu ===");
@@ -32,7 +32,7 @@ async function bootstrap() {
     console.log(`🌐 Host: ${process.env.DB_HOST}:${process.env.DB_PORT}`);
     console.log(`👤 User: ${process.env.DB_USER}`);
 
-    // List all tables
+    
     const queryRunner = dataSource.createQueryRunner();
     console.log("============================\n");
     logger.log("Database connection has been established successfully.");

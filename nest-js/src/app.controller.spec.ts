@@ -14,5 +14,5 @@ describe('AppController', () => {
     appController = app.get<AppController>(AppController);
   });
 
-  // Removed getHello test as the endpoint and method are removed.
+  
 });

@@ -17,10 +17,10 @@ export class AuthMiddleware implements NestMiddleware {
   ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    // 1. Public endpoints kontrolü 
+    
     const url = req.originalUrl.split('?')[0];
     
-    // Sadece tam olarak /auth/* ve /public/* endpointleri için token kontrolü yapmadan geç
+    
     if (
       url === '/auth/login' ||
       url === '/auth/forgot-password' ||
@@ -31,7 +31,7 @@ export class AuthMiddleware implements NestMiddleware {
       return next();
     }
     
-    // 2. JWT token kontrolü
+    
     const authHeader = req.headers['authorization'];
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new UnauthorizedException('JWT token missing');
@@ -53,7 +53,7 @@ export class AuthMiddleware implements NestMiddleware {
     
     console.log(`JWT payload: userId=${userId}, role=${roleName}, companyId=${companyId}`);
 
-    // 3. Kullanıcı kontrolü
+    
     const user = await this.userRepo.findOne({
       where: { id: userId },
       relations: ['role'],
@@ -63,13 +63,13 @@ export class AuthMiddleware implements NestMiddleware {
       throw new UnauthorizedException('User not found');
     }
     
-    // 4. Rol bilgilerini getir
+    
     const roleId = user.role?.id;
     if (!roleId) {
       throw new UnauthorizedException('User has no role');
     }
     
-    // Önce cache'den kontrol et
+    
     const cacheKey = `role:${roleId}`;
     let userRole: Role | null = null;
     
@@ -84,18 +84,18 @@ export class AuthMiddleware implements NestMiddleware {
     }
     
     if (!userRole) {
-      // DB'den yükle
+      
       userRole = await this.roleRepo.findOne({ where: { id: roleId } });
       if (!userRole) {
         throw new UnauthorizedException('Role not found');
       }
       
-      // Cache'e kaydet
+      
       await redis.set(cacheKey, JSON.stringify(userRole), 'EX', 3600);
       console.log(`Role from DB: ${userRole.role}`);
     }
     
-    // 5. User nesnesini request'e ekle (izinlerle birlikte)
+    
     const isAdmin = userRole.role === 'System Admin';
     
     (req as any).user = { 

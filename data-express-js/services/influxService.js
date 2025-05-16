@@ -16,8 +16,8 @@ console.log(
 );
 
 function getEpochRange(range) {
-  const now = Math.floor(Date.now() / 1000); // epoch saniye
-  let diff = 3600; // default 1 saat
+  const now = Math.floor(Date.now() / 1000);
+  let diff = 3600;
   switch (range) {
     case "1h":
       diff = 3600;
@@ -65,7 +65,6 @@ async function queryMacData(mac, range = "1h", page = 1, limit = 10) {
   } else {
     const { lower, upper } = getEpochRange(range);
 
-    // Timestamp'i doğrudan "_time" sütunu ile karşılaştırarak sorgulama yapalım
     const start = new Date(lower * 1000).toISOString();
     const stop = new Date(upper * 1000).toISOString();
 

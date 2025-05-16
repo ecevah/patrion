@@ -27,7 +27,7 @@ export class RoleController {
     console.log('Role findAll called, user:', req.user?.id);
     
     try {
-      // System Admin tüm rolleri, diğer kullanıcılar sadece System Admin olmayanları görebilir
+      
       const isSystemAdmin = req.user.role === 'System Admin';
       const result = await this.roleService.findAll(page, limit, isSystemAdmin);
       
@@ -48,7 +48,7 @@ export class RoleController {
     console.log('Role findOne called, id:', id);
     
     try {
-      // System Admin tüm rolleri, diğer kullanıcılar sadece System Admin olmayanları görebilir
+      
       const isSystemAdmin = req.user.role === 'System Admin';
       const role = await this.roleService.findOne(id, isSystemAdmin);
       
@@ -63,7 +63,7 @@ export class RoleController {
   @Permission('can_add_company')
   async update(@Param('id') id: number, @Body() dto: UpdateRoleDto, @Req() req) {
     try {
-      // Rol ID kontrolü - sadece System Admin'in değiştirmesini istediğimiz roller için
+      
       const role = await this.roleService.findOne(id, true);
       if (role.role === 'System Admin' && req.user.role !== 'System Admin') {
         throw new ForbiddenException({
@@ -84,7 +84,7 @@ export class RoleController {
   @Permission('can_add_company')
   async remove(@Param('id') id: number, @Req() req) {
     try {
-      // Silmeden önce rol kontrolü - System Admin rolünü silmeye çalışıyorsa engelle
+      
       const role = await this.roleService.findOne(id, true);
       if (role.role === 'System Admin') {
         throw new ForbiddenException({

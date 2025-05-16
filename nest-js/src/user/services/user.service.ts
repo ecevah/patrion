@@ -20,13 +20,13 @@ export class UserService {
   ) {}
 
   async create(dto: CreateUserDto, companyId: number, isAdmin: boolean, reqUser?: any) {
-    // Şifre politikası kontrolü
+    
     const password = dto.password;
     const passwordPolicy = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
     if (!passwordPolicy.test(password)) {
       throw new BadRequestException('Şifre en az 8 karakter, 1 büyük harf, 1 küçük harf, 1 rakam ve 1 özel karakter içermelidir.');
     }
-    // Username ve email benzersizliği kontrolü
+    
     const existingUser = await this.userRepo.findOne({ where: [{ username: dto.username }, { email: dto.email }] });
     if (existingUser) {
       throw new BadRequestException('Kullanıcı adı veya e-posta zaten kayıtlı.');
@@ -36,12 +36,12 @@ export class UserService {
     const company = await this.companyRepo.findOne({ where: { id: companyId } });
     if (!company) throw new NotFoundException('Company not found');
 
-    // Şifreyi hash'le
+    
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
     const user = this.userRepo.create({
       username: dto.username,
-      password: hashedPassword, // hash'lenmiş şifre
+      password: hashedPassword, 
       email: dto.email,
       role,
       company,
@@ -57,7 +57,7 @@ export class UserService {
       .leftJoinAndSelect('user.role', 'role')
       .leftJoinAndSelect('user.company', 'company');
 
-    // Sistem adminleri olmayan bir rol sorgusu
+    
     query.andWhere('role.role != :adminRole', { adminRole: 'System Admin' });
     
     if (companyId) {
@@ -97,7 +97,7 @@ export class UserService {
     
     const [users, total] = await query.getManyAndCount();
     
-    // Şifreleri sonuçtan çıkar
+    
     const usersWithoutPassword = users.map(user => {
       const { password, ...userWithoutPassword } = user;
       return userWithoutPassword;
@@ -130,7 +130,7 @@ export class UserService {
     let user: User | null = null;
     const isAdmin = reqUser?.role === 'System Admin';
     
-    // Önce kullanıcıyı role ile birlikte çek
+    
     if (isAdmin) {
       user = await this.userRepo.findOne({ 
         where: { id },
@@ -138,14 +138,14 @@ export class UserService {
       });
       if (!user) throw new NotFoundException('User not found');
     } else {
-      // Admin olmayan kullanıcı sadece kendi şirketindeki kullanıcıları görüntüleyebilir
+      
       user = await this.userRepo.findOne({ 
         where: { id, company: { id: reqUser.companyId } },
         relations: ['role', 'company']
       });
       if (!user) throw new NotFoundException('User not found in this company');
       
-      // Admin olmayan kullanıcı System Admin rolündeki kullanıcıları güncelleyemez
+      
       if (user.role && user.role.role === 'System Admin') {
         throw new BadRequestException({
           message: 'System Admin kullanıcılarını güncelleme yetkiniz yok',
@@ -154,7 +154,7 @@ export class UserService {
       }
     }
     
-    // Şifre alanını dto'dan kaldır
+    
     const { password, ...restDto } = dto;
     
     Object.assign(user, restDto);
@@ -163,7 +163,7 @@ export class UserService {
   }
 
   async updateByIdWithCompany(id: number, companyId: number, dto: Partial<CreateUserDto>, reqUser?: any) {
-    // Kullanıcıyı role ilişkisiyle birlikte çek
+    
     const user = await this.userRepo.findOne({
       where: { id, company: { id: companyId } },
       relations: ['role', 'company']
@@ -171,7 +171,7 @@ export class UserService {
     
     if (!user) throw new NotFoundException('User not found in this company');
     
-    // System Admin kullanıcıları sadece System Admin tarafından güncellenebilir
+    
     if (user.role && user.role.role === 'System Admin') {
       throw new BadRequestException({
         message: 'System Admin kullanıcılarını güncelleme yetkiniz yok',
@@ -179,7 +179,7 @@ export class UserService {
       });
     }
     
-    // Şifre alanını dto'dan kaldır
+    
     const { password, ...restDto } = dto;
     
     Object.assign(user, restDto);
@@ -187,7 +187,7 @@ export class UserService {
     return this.userRepo.save(user);
   }
 
-  // System Admin kullanıcıları için özel metot - tüm kullanıcıları filtrelemeden görüntüler
+  
   async getAllForAdmin(page: number = 1, limit: number = 10) {
     const skipCount = (page - 1) * limit;
     
@@ -198,7 +198,7 @@ export class UserService {
       order: { id: 'ASC' }
     });
     
-    // Şifreleri sonuçtan çıkar
+    
     const usersWithoutPassword = users.map(user => {
       const { password, ...userWithoutPassword } = user;
       return userWithoutPassword;
@@ -214,7 +214,7 @@ export class UserService {
     return { users: usersWithoutPassword, pagination };
   }
 
-  // System Admin kullanıcıları için özel metot - herhangi bir kullanıcıyı filtrelemeden görüntüler
+  
   async getByIdForAdmin(id: number) {
     const user = await this.userRepo.findOne({ where: { id }, relations: ['role', 'company'] });
     if (!user) throw new NotFoundException('User not found');

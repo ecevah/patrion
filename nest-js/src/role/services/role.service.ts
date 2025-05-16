@@ -25,7 +25,7 @@ export class RoleService {
   async findAll(page: number = 1, limit: number = 10, isSystemAdmin: boolean = false) {
     const skipCount = (page - 1) * limit;
     
-    // Sorgu hazırlığı
+    
     const queryBuilder = this.roleRepo.createQueryBuilder('role')
       .leftJoinAndSelect('role.create_by', 'create_by')
       .leftJoinAndSelect('role.update_by', 'update_by')
@@ -33,7 +33,7 @@ export class RoleService {
       .take(limit)
       .orderBy('role.id', 'ASC');
     
-    // System Admin değilse, sadece System Admin olmayan rolleri getir
+    
     if (!isSystemAdmin) {
       queryBuilder.where('role.role != :systemAdminRole', { systemAdminRole: 'System Admin' });
     }
@@ -51,7 +51,7 @@ export class RoleService {
   }
 
   async findOne(id: number, isSystemAdmin: boolean = false) {
-    // Önce rolü çek
+    
     const role = await this.roleRepo.findOne({ 
       where: { id },
       relations: ['create_by', 'update_by'] 
@@ -59,7 +59,7 @@ export class RoleService {
     
     if (!role) throw new NotFoundException('Role not found');
     
-    // System Admin değilse ve System Admin rolünü çekmeye çalışıyorsa engelle
+    
     if (!isSystemAdmin && role.role === 'System Admin') {
       throw new ForbiddenException({
         message: 'System Admin rolünü görüntüleme yetkiniz yok',
@@ -74,7 +74,7 @@ export class RoleService {
     const role = await this.roleRepo.findOne({ where: { id } });
     if (!role) throw new NotFoundException('Role not found');
     
-    // System Admin rolünün "role" adını değiştirmeye çalışıyorsa engelle
+    
     if (role.role === 'System Admin' && dto.role && dto.role !== 'System Admin') {
       throw new ForbiddenException({
         message: 'System Admin rolünün adı değiştirilemez',
@@ -91,7 +91,7 @@ export class RoleService {
     const role = await this.roleRepo.findOne({ where: { id } });
     if (!role) throw new NotFoundException('Role not found');
     
-    // System Admin rolünü silmeye çalışıyorsa engelle
+    
     if (role.role === 'System Admin') {
       throw new ForbiddenException({
         message: 'System Admin rolü silinemez',
@@ -99,7 +99,7 @@ export class RoleService {
       });
     }
     
-    // Role kullanımda olup olmadığını kontrol etmek için implementation eklenebilir
+    
     
     await this.roleRepo.remove(role);
     return { id, success: true };

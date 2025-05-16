@@ -7,7 +7,7 @@ import { SuccessResponse, ListSuccessResponse } from '../common/response.dto';
 export class LogController {
   constructor(private readonly logService: LogService) {}
 
-  // Tüm logları getir (system admin tümünü, can_view_log ise sadece kendi şirketini)
+  
   @Get('all')
   @Permission('can_view_log')
   async getAll(
@@ -21,7 +21,7 @@ export class LogController {
     return new ListSuccessResponse('Log kayıtları başarıyla listelendi', result.pagination, result.logs);
   }
 
-  // Belirli bir kullanıcıya ait logları getir
+  
   @Get('user/:userId')
   @Permission('can_view_log')
   async getByUserId(

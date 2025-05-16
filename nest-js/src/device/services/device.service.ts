@@ -23,20 +23,20 @@ export class DeviceService {
   ) {}
 
   async create(dto: CreateDeviceDto, companyId: number, userId: number) {
-    // Şirket kontrolü
+    
     const company = await this.companyRepo.findOne({ where: { id: companyId } });
     if (!company) {
       throw new NotFoundException(`${companyId} ID'li şirket bulunamadı`);
     }
     
-    // Kullanıcı kontrolü
+    
     const user = await this.userRepo.findOne({ where: { id: userId } });
     if (!user) {
       throw new NotFoundException(`${userId} ID'li kullanıcı bulunamadı`);
     }
     
     try {
-      // Cihaz oluşturma
+      
       const device = this.deviceRepo.create({
         name: dto.name,
         mqtt_topic: dto.mqtt_topic,
@@ -48,8 +48,8 @@ export class DeviceService {
       
       return await this.deviceRepo.save(device);
     } catch (error) {
-      // Unique constraint hatası kontrolü
-      if (error.code === '23505') { // PostgreSQL unique constraint error code
+      
+      if (error.code === '23505') { 
         if (error.detail.includes('name')) {
           throw new BadRequestException(`"${dto.name}" adında bir cihaz zaten mevcut. Lütfen farklı bir isim kullanın.`);
         } else if (error.detail.includes('mac')) {
@@ -65,7 +65,7 @@ export class DeviceService {
   async getAll(companyId?: number) {
     try {
       if (companyId) {
-        // Önce şirket var mı kontrol et
+        
         const company = await this.companyRepo.findOne({ where: { id: companyId } });
         if (!company) {
           throw new NotFoundException(`${companyId} ID'li şirket bulunamadı`);
@@ -93,7 +93,7 @@ export class DeviceService {
       let device: Device | null = null;
       
       if (companyId) {
-        // Önce şirket var mı kontrol et
+        
         const company = await this.companyRepo.findOne({ where: { id: companyId } });
         if (!company) {
           throw new NotFoundException(`${companyId} ID'li şirket bulunamadı`);
@@ -129,13 +129,13 @@ export class DeviceService {
 
   async update(id: number, dto: UpdateDeviceDto, companyId: number, userId: number) {
     try {
-      // Kullanıcı kontrolü
+      
       const user = await this.userRepo.findOne({ where: { id: userId } });
       if (!user) {
         throw new NotFoundException(`${userId} ID'li kullanıcı bulunamadı`);
       }
       
-      // Cihaz kontrolü
+      
       let device = await this.deviceRepo.findOne({ 
         where: { id }, 
         relations: ['company', 'create_by', 'update_by'] 
@@ -145,12 +145,12 @@ export class DeviceService {
         throw new NotFoundException(`${id} ID'li cihaz bulunamadı`);
       }
       
-      // Şirket bazlı yetki kontrolü
+      
       if (companyId && device.company.id !== companyId) {
         throw new NotFoundException(`${id} ID'li cihaz bu şirkette bulunamadı`);
       }
       
-      // Şirket değişikliği kontrolü
+      
       if (dto.companyId) {
         const company = await this.companyRepo.findOne({ where: { id: dto.companyId } });
         if (!company) {
@@ -159,7 +159,7 @@ export class DeviceService {
         device.company = company;
       }
       
-      // Cihaz güncelleme
+      
       Object.assign(device, {
         name: dto.name !== undefined ? dto.name : device.name,
         mqtt_topic: dto.mqtt_topic !== undefined ? dto.mqtt_topic : device.mqtt_topic,
@@ -169,8 +169,8 @@ export class DeviceService {
       
       return await this.deviceRepo.save(device);
     } catch (error) {
-      // Unique constraint hatası kontrolü
-      if (error.code === '23505') { // PostgreSQL unique constraint error code
+      
+      if (error.code === '23505') { 
         if (error.detail.includes('name')) {
           throw new BadRequestException(`"${dto.name}" adında bir cihaz zaten mevcut. Lütfen farklı bir isim kullanın.`);
         } else if (error.detail.includes('mac')) {
@@ -192,7 +192,7 @@ export class DeviceService {
       let device: Device | null = null;
       
       if (companyId) {
-        // Önce şirket var mı kontrol et
+        
         const company = await this.companyRepo.findOne({ where: { id: companyId } });
         if (!company) {
           throw new NotFoundException(`${companyId} ID'li şirket bulunamadı`);
@@ -217,10 +217,10 @@ export class DeviceService {
         }
       }
       
-      // Önce bu cihazla ilişkili tüm kullanıcı erişimlerini sil
+      
       await this.userDeviceAccessRepo.delete({ device: { id: device.id } });
       
-      // Sonra cihazı sil
+      
       await this.deviceRepo.remove(device);
       return { message: 'Cihaz başarıyla silindi' };
     } catch (error) {
@@ -240,12 +240,12 @@ export class DeviceService {
    */
   async getDevicesByPermission(userId: number, userRole: string, userPermissions: any, companyId: number) {
     try {
-      // Parametrelerin varlığını kontrol et
+      
       if (!userId) {
         throw new BadRequestException('Kullanıcı ID parametresi eksik');
       }
 
-      // 1. System Admin için tüm cihazları getir
+      
       if (userRole === 'System Admin') {
         console.log(`System Admin (${userId}) için tüm cihazlar getiriliyor`);
         const devices = await this.deviceRepo.find({
@@ -254,10 +254,10 @@ export class DeviceService {
         return devices;
       }
       
-      // Güvenlik kontrolleri
+      
       userPermissions = userPermissions || {};
       
-      // 2. can_assign_device yetkisi için şirket cihazlarını getir
+      
       if (userPermissions.can_assign_device === true) {
         if (!companyId) {
           throw new BadRequestException('Şirket ID bulunamadı');
@@ -278,7 +278,7 @@ export class DeviceService {
         return devices;
       }
       
-      // 3. can_view_data yetkisi için kullanıcıya atanmış cihazları getir
+      
       if (userPermissions.can_view_data === true) {
         console.log(`can_view_data yetkisi olan kullanıcı (${userId}) için atanmış cihazlar getiriliyor`);
         
@@ -287,7 +287,7 @@ export class DeviceService {
           throw new NotFoundException(`${userId} ID'li kullanıcı bulunamadı`);
         }
         
-        // Kullanıcıya atanmış cihazları bul
+        
         const userDeviceAccesses = await this.userDeviceAccessRepo.find({
           where: { user: { id: userId } },
           relations: ['device', 'device.company', 'device.create_by', 'device.update_by']
@@ -295,15 +295,15 @@ export class DeviceService {
         
         if (userDeviceAccesses.length === 0) {
           console.log(`Kullanıcı (${userId}) için atanmış cihaz bulunamadı`);
-          return []; // Kullanıcıya atanmış cihaz yok, boş dizi dön
+          return []; 
         }
         
-        // Cihazları çıkar
+        
         const devices = userDeviceAccesses.map(access => access.device);
         return devices;
       }
       
-      // 4. Hiçbir yetki yoksa erişim reddet
+      
       console.log(`Kullanıcının (${userId}) yeterli yetkisi yok. Yetkiler:`, userPermissions);
       throw new ForbiddenException({
         message: 'Bu işlemi gerçekleştirmek için gerekli yetkilere sahip değilsiniz',

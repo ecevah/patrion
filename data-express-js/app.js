@@ -16,7 +16,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
-// Device route
 const deviceRouter = require("./routes/device");
 app.use("/device", deviceRouter);
 
