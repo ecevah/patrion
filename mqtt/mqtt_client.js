@@ -1,8 +1,8 @@
 const mqtt = require("mqtt");
 const fs = require("fs");
 
-const brokerUrl = "mqtts://localhost:8883";
-const topic = "10:20:30/data";
+const brokerUrl = "mqtts://168.231.101.179:8883";
+const topic = "DE:AD:BE:EF:00:01/data";
 
 const options = {
   key: fs.readFileSync("client.key"),
