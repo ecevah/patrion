@@ -16,8 +16,8 @@
 #define SSID_ADDR 0
 #define PASS_ADDR 32
 #define SENSOR_ID_ADDR 64
-#define DHTPIN 15     // DHT11 sensörünün bağlı olduğu pin
-#define DHTTYPE DHT11 // DHT11 sensör tipi
+#define DHTPIN 15     
+#define DHTTYPE DHT11 
 
 String ssid = "";
 String pass = "";
@@ -27,13 +27,13 @@ WebServer server(80);
 WiFiClientSecure espClient;
 PubSubClient mqttClient(espClient);
 DHT_Unified dht(DHTPIN, DHTTYPE);
-uint32_t delayMS = 2000; // Okuma aralığı (ms)
+uint32_t delayMS = 2000; 
 
-// MQTT ayarları
+
 const char* mqtt_server = "192.168.1.7";
 const int mqtt_port = 8883;
-const char* mqtt_username = ""; // MQTT kullanıcı adı (gerekirse doldurun)
-const char* mqtt_password = ""; // MQTT şifresi (gerekirse doldurun)
+const char* mqtt_username = ""; 
+const char* mqtt_password = ""; 
 String mqtt_topic;
 
 void setupMQTT() {
@@ -44,7 +44,7 @@ void setupMQTT() {
   mqttClient.setServer(mqtt_server, mqtt_port);
   mqttClient.setKeepAlive(60);
 
-  // MQTT topic ayarı
+  
   uint8_t mac[6];
   WiFi.macAddress(mac);
   char macStr[18];
@@ -141,7 +141,7 @@ bool connectWiFi() {
 
 void publishSensorData(float temperature, float humidity) {
   if (!mqttClient.connected()) {
-    // reconnectMQTT(); // Bağlantı fonksiyonun varsa burada çağırabilirsin
+    
     return;
   }
   DynamicJsonDocument doc(128);
