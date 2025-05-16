@@ -1,50 +1,50 @@
-# ESP32 Temperature & Humidity MQTT Client
+# ESP32 Sıcaklık & Nem MQTT İstemcisi
 
-This project uses an ESP32 with a DHT11/DHT22 sensor to read temperature and humidity values and publish them securely to an MQTT broker using TLS/SSL.
+Bu proje, ESP32 ve DHT11/DHT22 sensörü kullanarak sıcaklık ve nem değerlerini okur ve bu verileri TLS/SSL ile güvenli bir şekilde bir MQTT sunucusuna yayınlar.
 
-## Features
+## Özellikler
 
-- WiFi configuration via captive portal
-- Secure MQTT communication with certificate-based authentication
-- NTP time synchronization for accurate timestamps
-- DHT11/DHT22 sensor reading
-- JSON-formatted data publishing
+- Captive portal ile WiFi yapılandırması
+- Sertifika tabanlı kimlik doğrulama ile güvenli MQTT iletişimi
+- Doğru zaman damgası için NTP zaman senkronizasyonu
+- DHT11/DHT22 sensör okuma
+- JSON formatında veri yayını
 
-## Hardware Requirements
+## Donanım Gereksinimleri
 
-- ESP32 development board
-- DHT11 or DHT22 temperature and humidity sensor (connected to pin 15)
+- ESP32 geliştirme kartı
+- DHT11 veya DHT22 sıcaklık ve nem sensörü (15 numaralı pine bağlı)
 
-## Software Setup
+## Yazılım Kurulumu
 
-### 1. Install Required Libraries
+### 1. Gerekli Kütüphanelerin Kurulumu
 
-This project relies on the following libraries:
+Bu proje aşağıdaki kütüphaneleri kullanır:
 
-- DHT sensor library by Adafruit
-- PubSubClient by Nick O'Leary
-- NTPClient by Arduino Libraries
-- Time by Paul Stoffregen
-- ArduinoJson by Benoit Blanchon
+- Adafruit DHT sensör kütüphanesi
+- Nick O'Leary tarafından PubSubClient
+- Arduino Libraries tarafından NTPClient
+- Paul Stoffregen tarafından Time
+- Benoit Blanchon tarafından ArduinoJson
 
-All of these libraries can be installed via the PlatformIO Library Manager or Arduino Library Manager.
+Tüm bu kütüphaneler PlatformIO veya Arduino Library Manager üzerinden kurulabilir.
 
-### 2. Configure MQTT Settings
+### 2. MQTT Ayarlarını Yapılandırma
 
-Edit the `src/main.cpp` file to update your MQTT broker settings:
+`src/main.cpp` dosyasını düzenleyerek MQTT sunucu ayarlarını girin:
 
 ```cpp
 const char* mqtt_server = "your-mqtt-server.com";
 const int mqtt_port = 8883;
 ```
 
-### 3. Add SSL Certificates
+### 3. SSL Sertifikalarını Ekleme
 
-There are two ways to add SSL/TLS certificates:
+İki şekilde SSL/TLS sertifikası ekleyebilirsiniz:
 
-#### Option 1: Embed in the code (preferred for development)
+#### Seçenek 1: Koda gömülü (geliştirme için önerilir)
 
-Edit the `src/main.cpp` file to include your certificates directly in the code:
+`src/main.cpp` dosyasına sertifikalarınızı doğrudan ekleyin:
 
 ```cpp
 const char* default_ca_cert = "-----BEGIN CERTIFICATE-----\n"
@@ -60,31 +60,31 @@ const char* default_client_key = "-----BEGIN PRIVATE KEY-----\n"
                                  "-----END PRIVATE KEY-----\n";
 ```
 
-#### Option 2: Upload to SPIFFS (preferred for production)
+#### Seçenek 2: SPIFFS'e yükleme (prodüksiyon için önerilir)
 
-1. Create a `data` directory in your project root
-2. Add your certificate files to this directory:
-   - `ca.crt` - CA certificate
-   - `client.crt` - Client certificate
-   - `client.key` - Client private key
-3. Upload the files to the ESP32's SPIFFS file system using PlatformIO:
+1. Proje kök dizininde `data` klasörü oluşturun
+2. Sertifika dosyalarınızı bu klasöre ekleyin:
+   - `ca.crt` - CA sertifikası
+   - `client.crt` - İstemci sertifikası
+   - `client.key` - İstemci özel anahtarı
+3. PlatformIO ile dosyaları ESP32'nin SPIFFS dosya sistemine yükleyin:
    ```
    pio run --target uploadfs
    ```
 
-## Usage
+## Kullanım
 
-1. Flash the firmware to your ESP32
-2. On first boot, the ESP32 will create an access point named "ESP32-Setup"
-3. Connect to this AP with the password "12345678"
-4. Open a web browser and navigate to the IP address displayed in the serial monitor (usually 192.168.4.1)
-5. Configure your WiFi credentials and sensor ID
-6. The ESP32 will restart and connect to your WiFi network
-7. If successful, it will connect to the MQTT broker and start publishing sensor data
+1. Yazılımı ESP32'ye yükleyin
+2. İlk açılışta ESP32, "ESP32-Setup" adında bir erişim noktası oluşturur
+3. Bu ağa "12345678" şifresiyle bağlanın
+4. Seri monitörde görünen IP adresine (genellikle 192.168.4.1) tarayıcıdan girin
+5. WiFi bilgilerinizi ve sensör ID'nizi girin
+6. ESP32 yeniden başlar ve WiFi ağına bağlanır
+7. Bağlantı başarılıysa MQTT sunucusuna bağlanır ve sensör verilerini yayınlamaya başlar
 
-## MQTT Data Format
+## MQTT Veri Formatı
 
-Data is published to the topic `XX:XX:XX:XX:XX:XX/data` where `XX:XX:XX:XX:XX:XX` is the MAC address of your ESP32. The payload is a JSON object with the following format:
+Veriler, ESP32'nin MAC adresine özel `XX:XX:XX:XX:XX:XX/data` konusuna yayınlanır. Gönderilen veri aşağıdaki JSON formatındadır:
 
 ```json
 {
@@ -95,12 +95,21 @@ Data is published to the topic `XX:XX:XX:XX:XX:XX/data` where `XX:XX:XX:XX:XX:XX
 }
 ```
 
-## Troubleshooting
+## Sorun Giderme
 
-- If you have issues with the certificates, check the format and make sure there are no extra spaces or line breaks
-- Monitor the serial output for debug information (9600 baud)
-- If the ESP32 is stuck in AP mode, try to clear the EEPROM by flashing a separate sketch to do so
+- Sertifikalarla ilgili sorun yaşarsanız, formatı ve fazladan boşluk/karakter olup olmadığını kontrol edin
+- Seri çıkışını (9600 baud) hata ayıklama için izleyin
+- ESP32 AP modunda takılı kalırsa, EEPROM'u temizleyen ayrı bir kod yüklemeyi deneyin
 
-## License
+# ESP32 DHT11 Bağlantı
+- VCC: 3V3
+- GND: GND
+- DOUT: D15
+- Sertifikalar oluşturularak kullanılabilir.
 
-This project is open source and available under the MIT License.
+## Bağlantı Şeması
+
+![ESP32 DHT11 Bağlantı Şeması](esp-dht11.png)
+
+---
+
