@@ -10,7 +10,7 @@ export default function CreateUserPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const [userRole, setUserRole] = useState("user");
   
-  // Form fields
+  
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +34,7 @@ export default function CreateUserPage() {
     
     setUserRole(roleFromStorage);
     
-    // Fetch companies and roles for dropdowns
+    
     fetchCompanies(token);
     fetchRoles(token);
     
@@ -50,7 +50,7 @@ export default function CreateUserPage() {
         if (data.status) {
           setCompanies(data.data || []);
           
-          // System admin dışındaki roller için kendi şirketini otomatik seç
+          
           if (userRole !== "System Admin" && data.data.length > 0) {
             const userCompany = localStorage.getItem("companyId");
             if (userCompany) {
@@ -80,7 +80,7 @@ export default function CreateUserPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Validate passwords match
+    
     if (password !== confirmPassword) {
       setError("Şifreler eşleşmiyor");
       return;
@@ -116,7 +116,7 @@ export default function CreateUserPage() {
       
       if (data.status) {
         setSuccessMessage("Kullanıcı başarıyla oluşturuldu");
-        // Reset form
+        
         setUsername("");
         setEmail("");
         setPassword("");
@@ -124,7 +124,7 @@ export default function CreateUserPage() {
         setCompanyId("");
         setRoleId("");
         
-        // Optional: Redirect to user list after 2 seconds
+        
         setTimeout(() => {
           router.push("/dashboard/users");
         }, 2000);
@@ -138,7 +138,7 @@ export default function CreateUserPage() {
     }
   };
 
-  // Şirket seçimi alanını render etme
+  
   const renderCompanyField = () => {
     return (
       <div>

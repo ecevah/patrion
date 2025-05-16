@@ -9,13 +9,13 @@ export default function CreateRolePage() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   
-  // Form fields
+  
   const [roleName, setRoleName] = useState("");
   const [permissions, setPermissions] = useState({
     can_add_company: false,
     can_add_user: false,
     can_assign_device: false,
-    can_view_data: true, // Default to true as it's the most basic permission
+    can_view_data: true, 
     can_view_log: false,
     can_manage_iot: false
   });
@@ -62,7 +62,7 @@ export default function CreateRolePage() {
       
       if (data.status) {
         setSuccessMessage("Rol başarıyla oluşturuldu");
-        // Reset form
+        
         setRoleName("");
         setPermissions({
           can_add_company: false,
@@ -73,7 +73,7 @@ export default function CreateRolePage() {
           can_manage_iot: false
         });
         
-        // Redirect to roles list after 2 seconds
+        
         setTimeout(() => {
           router.push("/dashboard/roles");
         }, 2000);

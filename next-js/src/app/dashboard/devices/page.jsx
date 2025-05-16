@@ -12,19 +12,19 @@ export default function DevicesPage() {
   const [userRole, setUserRole] = useState("user");
   const router = useRouter();
   
-  // Pagination state
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  // Deletion state
+  
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deviceToDelete, setDeviceToDelete] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleteError, setDeleteError] = useState("");
 
-  // Edit modal state
+  
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deviceToEdit, setDeviceToEdit] = useState(null);
   const [editName, setEditName] = useState("");
@@ -34,7 +34,7 @@ export default function DevicesPage() {
   const [editLoading, setEditLoading] = useState(false);
   const [editError, setEditError] = useState("");
 
-  // Create modal state
+  
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [createName, setCreateName] = useState("");
   const [createMqttTopic, setCreateMqttTopic] = useState("");
@@ -43,7 +43,7 @@ export default function DevicesPage() {
   const [createLoading, setCreateLoading] = useState(false);
   const [createError, setCreateError] = useState("");
 
-  // User Assignment modal state
+  
   const [assignModalOpen, setAssignModalOpen] = useState(false);
   const [deviceToAssign, setDeviceToAssign] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState("");
@@ -77,7 +77,7 @@ export default function DevicesPage() {
         if (data.status) {
           setDevices(data.data);
           
-          // Update pagination info if available
+          
           if (data.pagination) {
             setTotalPages(data.pagination.total_page);
             setTotalItems(data.pagination.total_item);
@@ -98,13 +98,13 @@ export default function DevicesPage() {
       .then((data) => {
         if (data.status) {
           setCompanies(data.data);
-          // Set default company for create form if companies exist
+          
           if (data.data.length > 0 && !createCompanyId) {
             setCreateCompanyId(data.data[0].id.toString());
           }
-          // System admin dışındaki roller için şirket değiştirilmeyecek
+          
           if (userRole !== "System Admin" && data.data.length > 0) {
-            // Kullanıcının kendi şirketini bulma
+            
             const userCompany = localStorage.getItem("companyId");
             if (userCompany) {
               setCreateCompanyId(userCompany);
@@ -127,7 +127,7 @@ export default function DevicesPage() {
       .then((data) => {
         if (data.status) {
           setUsers(data.data);
-          // Set default user for assign form if users exist
+          
           if (data.data.length > 0 && !selectedUserId) {
             setSelectedUserId(data.data[0].id.toString());
           }
@@ -136,7 +136,7 @@ export default function DevicesPage() {
       .catch((err) => console.error("Kullanıcılar yüklenirken hata oluştu:", err));
   };
 
-  // Page navigation functions
+  
   const goToPage = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
@@ -154,7 +154,7 @@ export default function DevicesPage() {
     }
   };
 
-  // Delete device
+  
   const confirmDelete = (device) => {
     setDeviceToDelete(device);
     setDeleteModalOpen(true);
@@ -189,7 +189,7 @@ export default function DevicesPage() {
       const data = await response.json();
       
       if (data.status) {
-        // Refresh devices after deletion
+        
         fetchDevices(token);
         setDeleteModalOpen(false);
         setDeviceToDelete(null);
@@ -203,7 +203,7 @@ export default function DevicesPage() {
     }
   };
 
-  // Edit device
+  
   const openEditModal = (device) => {
     setDeviceToEdit(device);
     setEditName(device.name);
@@ -269,7 +269,7 @@ export default function DevicesPage() {
       const data = await response.json();
       
       if (data.status) {
-        // Refresh devices after update
+        
         fetchDevices(token);
         setEditModalOpen(false);
         setDeviceToEdit(null);
@@ -287,13 +287,13 @@ export default function DevicesPage() {
     }
   };
 
-  // Create device
+  
   const openCreateModal = () => {
     setCreateModalOpen(true);
     setCreateName("");
     setCreateMqttTopic("");
     setCreateMac("");
-    // Set default company if available
+    
     if (companies.length > 0) {
       setCreateCompanyId(companies[0].id.toString());
     } else {
@@ -360,7 +360,7 @@ export default function DevicesPage() {
       const data = await response.json();
       
       if (data.status) {
-        // Refresh devices after creation
+        
         fetchDevices(token);
         setCreateModalOpen(false);
         setCreateName("");
@@ -376,7 +376,7 @@ export default function DevicesPage() {
     }
   };
 
-  // User assignment functions
+  
   const openAssignModal = (device) => {
     setDeviceToAssign(device);
     setAssignModalOpen(true);
@@ -410,7 +410,7 @@ export default function DevicesPage() {
     }
     
     try {
-      // Using the new endpoint format: /user-device-access/create/{deviceId}/{userId}
+      
       const response = await fetch(`http://localhost:3232/user-device-access/create/${deviceToAssign.id}/${selectedUserId}`, {
         method: "POST",
         headers: {
@@ -422,7 +422,7 @@ export default function DevicesPage() {
       
       if (data.status) {
         setAssignSuccess("Kullanıcı cihaza başarıyla atandı!");
-        // Clear selected user after successful assignment
+        
         setTimeout(() => {
           setAssignSuccess("");
         }, 3000);
@@ -436,7 +436,7 @@ export default function DevicesPage() {
     }
   };
 
-  // Düzenleme veya yeni cihaz oluşturma modallarında şirket seçimi alanı için render fonksiyonu
+  
   const renderCompanyField = (value, setValue, label = "Şirket*") => {
     return (
       <div>

@@ -11,19 +11,19 @@ export default function UserDeviceAccessPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   
-  // Pagination state
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  // Deletion state
+  
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [accessToDelete, setAccessToDelete] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleteError, setDeleteError] = useState("");
 
-  // Edit modal state
+  
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [accessToEdit, setAccessToEdit] = useState(null);
   const [editUserId, setEditUserId] = useState("");
@@ -31,7 +31,7 @@ export default function UserDeviceAccessPage() {
   const [editLoading, setEditLoading] = useState(false);
   const [editError, setEditError] = useState("");
 
-  // Create modal state
+  
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [createUserId, setCreateUserId] = useState("");
   const [createDeviceId, setCreateDeviceId] = useState("");
@@ -61,7 +61,7 @@ export default function UserDeviceAccessPage() {
         if (data.status) {
           setAccessList(data.data);
           
-          // Update pagination info if available
+          
           if (data.pagination) {
             setTotalPages(data.pagination.total_page);
             setTotalItems(data.pagination.total_item);
@@ -82,7 +82,7 @@ export default function UserDeviceAccessPage() {
       .then((data) => {
         if (data.status) {
           setUsers(data.data);
-          // Set default value for create form if users exist
+          
           if (data.data.length > 0 && !createUserId) {
             setCreateUserId(data.data[0].id.toString());
           }
@@ -99,7 +99,7 @@ export default function UserDeviceAccessPage() {
       .then((data) => {
         if (data.status) {
           setDevices(data.data);
-          // Set default value for create form if devices exist
+          
           if (data.data.length > 0 && !createDeviceId) {
             setCreateDeviceId(data.data[0].id.toString());
           }
@@ -108,7 +108,7 @@ export default function UserDeviceAccessPage() {
       .catch((err) => console.error("Cihazlar yüklenirken hata oluştu:", err));
   };
 
-  // Page navigation functions
+  
   const goToPage = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
@@ -126,7 +126,7 @@ export default function UserDeviceAccessPage() {
     }
   };
 
-  // Delete access
+  
   const confirmDelete = (access) => {
     setAccessToDelete(access);
     setDeleteModalOpen(true);
@@ -161,7 +161,7 @@ export default function UserDeviceAccessPage() {
       const data = await response.json();
       
       if (data.status) {
-        // Refresh access list after deletion
+        
         fetchAccessList(token);
         setDeleteModalOpen(false);
         setAccessToDelete(null);
@@ -175,7 +175,7 @@ export default function UserDeviceAccessPage() {
     }
   };
 
-  // Edit access
+  
   const openEditModal = (access) => {
     setAccessToEdit(access);
     setEditUserId(access.user.id.toString());
@@ -230,7 +230,7 @@ export default function UserDeviceAccessPage() {
       const data = await response.json();
       
       if (data.status) {
-        // Refresh access list after update
+        
         fetchAccessList(token);
         setEditModalOpen(false);
         setAccessToEdit(null);
@@ -246,12 +246,12 @@ export default function UserDeviceAccessPage() {
     }
   };
 
-  // Create access
+  
   const openCreateModal = () => {
     setCreateModalOpen(true);
     setCreateError("");
     
-    // Set default values if available
+    
     if (users.length > 0) {
       setCreateUserId(users[0].id.toString());
     }
@@ -299,7 +299,7 @@ export default function UserDeviceAccessPage() {
       const data = await response.json();
       
       if (data.status) {
-        // Refresh access list after creation
+        
         fetchAccessList(token);
         setCreateModalOpen(false);
         setCreateUserId("");
@@ -314,7 +314,7 @@ export default function UserDeviceAccessPage() {
     }
   };
 
-  // Helper function to find user or device name from ID
+  
   const getUserName = (userId) => {
     const user = users.find(u => u.id === userId);
     return user ? user.username : "Bilinmeyen Kullanıcı";

@@ -9,7 +9,7 @@ export default function UsersPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   
-  // Pagination state
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
@@ -36,7 +36,7 @@ export default function UsersPage() {
         if (data.status) {
           setUsers(data.data);
           
-          // Update pagination info
+          
           if (data.pagination) {
             setTotalPages(data.pagination.total_page);
             setTotalItems(data.pagination.total_item);
@@ -49,7 +49,7 @@ export default function UsersPage() {
       .finally(() => setLoading(false));
   };
 
-  // Page navigation functions
+  
   const goToPage = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);

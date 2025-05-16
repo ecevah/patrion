@@ -5,7 +5,7 @@ import Link from "next/link";
 import React from "react";
 
 export default function EditRolePage({ params }) {
-  // Unwrap params with React.use()
+  
   const unwrappedParams = React.use(params);
   const roleId = unwrappedParams.id;
   
@@ -15,7 +15,7 @@ export default function EditRolePage({ params }) {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   
-  // Form fields
+  
   const [roleName, setRoleName] = useState("");
   const [permissions, setPermissions] = useState({
     can_add_company: false,
@@ -33,7 +33,7 @@ export default function EditRolePage({ params }) {
       return;
     }
     
-    // Fetch role data
+    
     fetchRole(token, roleId);
   }, [router, roleId]);
 
@@ -112,7 +112,7 @@ export default function EditRolePage({ params }) {
       if (data.status) {
         setSuccessMessage("Rol başarıyla güncellendi");
         
-        // Redirect to roles list after 2 seconds
+        
         setTimeout(() => {
           router.push("/dashboard/roles");
         }, 2000);

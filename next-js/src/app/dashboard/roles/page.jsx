@@ -9,13 +9,13 @@ export default function RolesPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   
-  // Pagination state
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  // Deletion state
+  
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [roleToDelete, setRoleToDelete] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -42,7 +42,7 @@ export default function RolesPage() {
         if (data.status) {
           setRoles(data.data);
           
-          // Update pagination info
+          
           if (data.pagination) {
             setTotalPages(data.pagination.total_page);
             setTotalItems(data.pagination.total_item);
@@ -55,7 +55,7 @@ export default function RolesPage() {
       .finally(() => setLoading(false));
   };
 
-  // Page navigation functions
+  
   const goToPage = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
@@ -73,7 +73,7 @@ export default function RolesPage() {
     }
   };
 
-  // Delete role
+  
   const confirmDelete = (role) => {
     setRoleToDelete(role);
     setDeleteModalOpen(true);
@@ -108,7 +108,7 @@ export default function RolesPage() {
       const data = await response.json();
       
       if (data.status) {
-        // Refresh roles after deletion
+        
         fetchRoles(token);
         setDeleteModalOpen(false);
         setRoleToDelete(null);

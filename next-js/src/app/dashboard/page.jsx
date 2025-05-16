@@ -8,9 +8,9 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [deviceLiveData, setDeviceLiveData] = useState({});
-  const [viewMode, setViewMode] = useState("grid"); // "grid" veya "list" görünüm modu
+  const [viewMode, setViewMode] = useState("grid"); 
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("name"); // "name", "company", "lastUpdate"
+  const [sortBy, setSortBy] = useState("name"); 
   const wsRef = useRef(null);
   const router = useRouter();
 
@@ -31,7 +31,7 @@ export default function DashboardPage() {
       .catch(() => setError("Sunucu hatası"))
       .finally(() => setLoading(false));
 
-    // WebSocket otomatik bağlan
+    
     let ws;
     if (typeof window !== 'undefined') {
       ws = new window.WebSocket("ws://localhost:8080");
@@ -50,8 +50,8 @@ export default function DashboardPage() {
               console.log("Payload parse error:", e);
             }
             
-            // Topic işleme - gelen topici cihazlarla eşleştir
-            const topicKey = data.topic.split('/')[0]; // Örn: "10:20:30/data" -> "10:20:30"
+            
+            const topicKey = data.topic.split('/')[0]; 
             
             if (payloadObj.temperature && payloadObj.humidity) {
               setDeviceLiveData(prev => ({
@@ -75,11 +75,11 @@ export default function DashboardPage() {
     };
   }, [router]);
 
-  // Cihaz filtre ve sıralama fonksiyonu
+  
   const getFilteredDevices = () => {
     let filtered = [...devices];
     
-    // Arama filtresi
+    
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
@@ -91,19 +91,19 @@ export default function DashboardPage() {
       );
     }
     
-    // Sıralama
+    
     filtered.sort((a, b) => {
       if (sortBy === "name") {
         return a.name.localeCompare(b.name);
       } else if (sortBy === "company") {
         return (a.company?.name || "").localeCompare(b.company?.name || "");
       } else if (sortBy === "lastUpdate") {
-        // Son güncelleme zamanına göre sırala (varsa)
+        
         const aTopicBase = a.mac || a.mqtt_topic.split('/')[0];
         const bTopicBase = b.mac || b.mqtt_topic.split('/')[0];
         const aTimestamp = deviceLiveData[aTopicBase]?.timestamp || 0;
         const bTimestamp = deviceLiveData[bTopicBase]?.timestamp || 0;
-        return bTimestamp - aTimestamp; // Yeniden eskiye
+        return bTimestamp - aTimestamp; 
       }
       return 0;
     });
@@ -129,7 +129,7 @@ export default function DashboardPage() {
     </div>
   );
 
-  // Durum istatistiklerini hesapla
+  
   const stats = {
     total: devices.length,
     online: Object.keys(deviceLiveData).length,

@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function EditUserPage({ params }) {
-  // Unwrap params with React.use()
+  
   const unwrappedParams = use(params);
   const userId = unwrappedParams.id;
   
@@ -37,10 +37,10 @@ export default function EditUserPage({ params }) {
     
     setUserRole(roleFromStorage);
     
-    // Fetch user details
+    
     fetchUserDetails(token);
     
-    // Fetch companies and roles for dropdowns
+    
     fetchCompanies(token);
     fetchRoles(token);
   }, [router, userId]);
@@ -78,9 +78,9 @@ export default function EditUserPage({ params }) {
         if (data.status) {
           setCompanies(data.data || []);
           
-          // System admin dışındaki roller için şirket değiştirilmeyecek
+          
           if (userRole !== "System Admin" && data.data.length > 0) {
-            // Kullanıcının kendi şirketini bulma
+            
             const userCompany = localStorage.getItem("companyId");
             if (userCompany) {
               setCompanyId(userCompany);
@@ -147,7 +147,7 @@ export default function EditUserPage({ params }) {
     }
   };
 
-  // Şirket seçimi alanını render etme
+  
   const renderCompanyField = () => {
     return (
       <div>

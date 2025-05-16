@@ -6,7 +6,7 @@ import Link from "next/link";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid } from 'recharts';
 
 export default function DeviceDetailPage({ params }) {
-  // Unwrap params with React.use()
+  
   const unwrappedParams = use(params);
   const id = unwrappedParams.id;
   
@@ -24,7 +24,7 @@ export default function DeviceDetailPage({ params }) {
   const [totalItems, setTotalItems] = useState(0);
   const wsRef = useRef(null);
 
-  // Cihaz bilgilerini getir
+  
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -43,7 +43,7 @@ export default function DeviceDetailPage({ params }) {
       .finally(() => setLoading(false));
   }, [id, router]);
 
-  // WebSocket bağlantısı ve veri işleme
+  
   useEffect(() => {
     if (!device) return;
     
@@ -69,10 +69,10 @@ export default function DeviceDetailPage({ params }) {
               console.log("Payload parse error:", e);
             }
             
-            // Topic eşleştirme: 10:20:30/data -> 10:20:30
+            
             const topicKey = data.topic.split('/')[0];
             
-            // MAC veya mqtt_topic'in başlangıcı ile eşleşiyorsa göster
+            
             if (device.mac === topicKey || device.mqtt_topic.startsWith(topicKey)) {
               setLiveData({
                 timestamp: payloadObj.timestamp,
@@ -93,7 +93,7 @@ export default function DeviceDetailPage({ params }) {
     };
   }, [device]);
 
-  // Geçmiş verileri getir
+  
   useEffect(() => {
     if (!device) return;
     
@@ -112,11 +112,11 @@ export default function DeviceDetailPage({ params }) {
       .then(res => res.json())
       .then(data => {
         if (data.status) {
-          // Verileri düzenle - timestamp, temperature, humidity
+          
           const processedData = processHistoryData(data.data);
           setHistory(processedData);
           
-          // Pagination bilgilerini güncelle
+          
           if (data.pagination) {
             setTotalPages(data.pagination.total_page);
             setTotalItems(data.pagination.total_item);
@@ -131,7 +131,7 @@ export default function DeviceDetailPage({ params }) {
       });
   };
   
-  // Geçmiş verileri düzenler ve gruplar
+  
   const processHistoryData = (data) => {
     const groupedByTime = {};
     
@@ -159,7 +159,7 @@ export default function DeviceDetailPage({ params }) {
     return Object.values(groupedByTime);
   };
 
-  // Sayfa değiştirme fonksiyonları
+  
   const goToPage = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);

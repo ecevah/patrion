@@ -9,26 +9,26 @@ export default function CompaniesPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   
-  // Pagination state
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  // Deletion state
+  
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [companyToDelete, setCompanyToDelete] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleteError, setDeleteError] = useState("");
 
-  // Edit modal state
+  
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [companyToEdit, setCompanyToEdit] = useState(null);
   const [editName, setEditName] = useState("");
   const [editLoading, setEditLoading] = useState(false);
   const [editError, setEditError] = useState("");
 
-  // Create modal state
+  
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [createName, setCreateName] = useState("");
   const [createLoading, setCreateLoading] = useState(false);
@@ -55,7 +55,7 @@ export default function CompaniesPage() {
         if (data.status) {
           setCompanies(data.data);
           
-          // Update pagination info if available
+          
           if (data.pagination) {
             setTotalPages(data.pagination.total_page);
             setTotalItems(data.pagination.total_item);
@@ -68,7 +68,7 @@ export default function CompaniesPage() {
       .finally(() => setLoading(false));
   };
 
-  // Page navigation functions
+  
   const goToPage = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
@@ -86,7 +86,7 @@ export default function CompaniesPage() {
     }
   };
 
-  // Delete company
+  
   const confirmDelete = (company) => {
     setCompanyToDelete(company);
     setDeleteModalOpen(true);
@@ -121,7 +121,7 @@ export default function CompaniesPage() {
       const data = await response.json();
       
       if (data.status) {
-        // Refresh companies after deletion
+        
         fetchCompanies(token);
         setDeleteModalOpen(false);
         setCompanyToDelete(null);
@@ -135,7 +135,7 @@ export default function CompaniesPage() {
     }
   };
 
-  // Edit company
+  
   const openEditModal = (company) => {
     setCompanyToEdit(company);
     setEditName(company.name);
@@ -182,7 +182,7 @@ export default function CompaniesPage() {
       const data = await response.json();
       
       if (data.status) {
-        // Refresh companies after update
+        
         fetchCompanies(token);
         setEditModalOpen(false);
         setCompanyToEdit(null);
@@ -197,7 +197,7 @@ export default function CompaniesPage() {
     }
   };
 
-  // Create company
+  
   const openCreateModal = () => {
     setCreateModalOpen(true);
     setCreateName("");
@@ -241,7 +241,7 @@ export default function CompaniesPage() {
       const data = await response.json();
       
       if (data.status) {
-        // Refresh companies after creation
+        
         fetchCompanies(token);
         setCreateModalOpen(false);
         setCreateName("");

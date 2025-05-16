@@ -14,7 +14,7 @@ export default function UserDetailPage({ params }) {
   const [error, setError] = useState("");
   const router = useRouter();
   
-  // Logs pagination state
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
@@ -77,7 +77,7 @@ export default function UserDetailPage({ params }) {
           setUserLogs(data.data);
           console.log("User logs:", data.data);
           
-          // Update pagination info
+          
           if (data.pagination) {
             setTotalPages(data.pagination.total_page);
             setTotalItems(data.pagination.total_item);
@@ -89,7 +89,7 @@ export default function UserDetailPage({ params }) {
       .catch((err) => console.error("Kullanıcı logları alınırken hata oluştu:", err));
   };
 
-  // Format JSON data for better display
+  
   const formatJson = (data) => {
     try {
       if (typeof data === 'string') {
@@ -101,12 +101,12 @@ export default function UserDetailPage({ params }) {
     }
   };
 
-  // Format timestamp
+  
   const formatDate = (timestamp) => {
     return new Date(timestamp).toLocaleString('tr-TR');
   };
 
-  // Format log details
+  
   const formatDetails = (details) => {
     try {
       const detailsObj = JSON.parse(details);
@@ -116,7 +116,7 @@ export default function UserDetailPage({ params }) {
     }
   };
 
-  // Pagination functions
+  
   const goToPage = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
@@ -134,7 +134,7 @@ export default function UserDetailPage({ params }) {
     }
   };
 
-  // Get color for log action type
+  
   const getActionTypeColor = (actionType) => {
     if (actionType.startsWith("GET")) {
       return "bg-blue-100 text-blue-800";
@@ -421,7 +421,7 @@ export default function UserDetailPage({ params }) {
   );
 }
 
-// Helper components
+
 const InfoItem = ({ label, value, badge = false, badgeColor = "" }) => {
   if (value === undefined || value === null) {
     value = "-";

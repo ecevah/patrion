@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function DashboardLayout({ children }) {
   const [username, setUsername] = useState("");
-  const [userRole, setUserRole] = useState("user"); // Default to lowest permission
+  const [userRole, setUserRole] = useState("user"); 
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
@@ -14,12 +14,12 @@ export default function DashboardLayout({ children }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Web görünümünde sidebar varsayılan olarak kapalı, hover ile açılacak
+    
     if (typeof window !== 'undefined') {
       if (window.innerWidth >= 768) {
         setSidebarOpen(false);
       } else {
-        // Mobil görünümde kapalı başlasın, tuşla açılacak
+        
         setSidebarOpen(false);
       }
     }
@@ -36,14 +36,14 @@ export default function DashboardLayout({ children }) {
     setUsername(usernameFromStorage);
     setUserRole(roleFromStorage);
     
-    // Rol bazlı erişim kontrolü
+    
     if (userRole === "User") {
-      // Kullanıcı ana sayfa ve cihaz detay sayfasında değilse ana sayfaya yönlendir
+      
       if (!pathname.startsWith("/dashboard/device/") && pathname !== "/dashboard") {
         router.push("/dashboard");
       }
     } else if (userRole === "Company Admin") {
-      // Şirket yöneticisi şirketler sayfasına erişemez
+      
       if (pathname.startsWith("/dashboard/companies")) {
         router.push("/dashboard");
       }
@@ -59,7 +59,7 @@ export default function DashboardLayout({ children }) {
     setSidebarOpen(!isSidebarOpen);
   };
 
-  // Rol bazlı filtreli navigasyon öğeleri
+  
   const getNavItems = () => {
     const allNavItems = [
       { 
@@ -135,7 +135,7 @@ export default function DashboardLayout({ children }) {
       },
     ];
 
-    // Kullanıcı rolüne göre filtrele
+    
     return allNavItems.filter(item => item.roles.includes(userRole));
   };
 

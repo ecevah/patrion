@@ -9,10 +9,10 @@ export default function LogsPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   
-  // Filter state
+  
   const [selectedUserId, setSelectedUserId] = useState("all");
   
-  // Pagination state
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
@@ -45,7 +45,7 @@ export default function LogsPage() {
         if (data.status) {
           setLogs(data.data);
           
-          // Update pagination info
+          
           if (data.pagination) {
             setTotalPages(data.pagination.total_page);
             setTotalItems(data.pagination.total_item);
@@ -69,7 +69,7 @@ export default function LogsPage() {
         if (data.status) {
           setLogs(data.data);
           
-          // Update pagination info
+          
           if (data.pagination) {
             setTotalPages(data.pagination.total_page);
             setTotalItems(data.pagination.total_item);
@@ -95,7 +95,7 @@ export default function LogsPage() {
       .catch((err) => console.error("Kullanıcılar yüklenirken hata oluştu:", err));
   };
 
-  // Page navigation functions
+  
   const goToPage = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
@@ -113,12 +113,12 @@ export default function LogsPage() {
     }
   };
 
-  // Format timestamp
+  
   const formatDate = (timestamp) => {
     return new Date(timestamp).toLocaleString('tr-TR');
   };
 
-  // Format JSON details
+  
   const formatDetails = (details) => {
     try {
       const detailsObj = JSON.parse(details);
@@ -128,10 +128,10 @@ export default function LogsPage() {
     }
   };
 
-  // Handle user filter change
+  
   const handleUserFilterChange = (e) => {
     setSelectedUserId(e.target.value);
-    setCurrentPage(1); // Reset to first page when filter changes
+    setCurrentPage(1); 
   };
 
   if (loading && logs.length === 0) return <div className="flex justify-center items-center h-screen">Yükleniyor...</div>;
@@ -261,7 +261,7 @@ export default function LogsPage() {
   );
 }
 
-// Koyu tema için action type renkleri
+
 function getActionTypeColorDark(actionType) {
   if (actionType.startsWith("GET")) {
     return "bg-blue-900/20 text-blue-400 border border-blue-700";
