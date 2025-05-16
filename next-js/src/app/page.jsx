@@ -125,7 +125,6 @@ export default function LoginPage() {
             </svg>
             Şifremi Unuttum
           </a>
-          <span className="text-xs text-text-tertiary mt-2 md:mt-0">© 2024 Patrion IoT Platform</span>
         </div>
       </div>
     </div>
