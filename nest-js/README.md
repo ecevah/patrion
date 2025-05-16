@@ -105,3 +105,24 @@ Kullanıcının rol ve izinlerine göre cihaz listesi döner:
 
 ---
 
+# ER Diyagramı (Varlık-İlişki)
+
+Aşağıda sistemin temel veri modelini gösteren ER diyagramı yer almaktadır:
+
+![ER Diyagramı](patriondrawio.png)
+
+Diyagramın düzenlenebilir haline `patrion.drawio` dosyasından ulaşabilirsiniz. (draw.io veya diagrams.net ile açabilirsiniz.)
+
+---
+
+# Postman Koleksiyonları
+
+API'leri kolayca test edebilmeniz için iki adet Postman koleksiyonu eklenmiştir:
+
+- `Data Service.postman_collection.json`
+- `Core Service.postman_collection.json`
+
+Bu dosyaları Postman uygulamasına import ederek, sistemdeki tüm uç noktaları kolayca test edebilirsiniz.
+
+---
+

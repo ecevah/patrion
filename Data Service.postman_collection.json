@@ -1,0 +1,83 @@
+{
+	"info": {
+		"_postman_id": "07c1ff73-67a2-4f6a-be1f-b8b809110379",
+		"name": "Data Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41939348"
+	},
+	"item": [
+		{
+			"name": "Get Data",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoieWVuaWFkIiwiZW1haWwiOiJlZWNldmFoQGdtYWlsLmNvbSIsImNvbXBhbnlJZCI6MSwicm9sZSI6IlN5c3RlbSBBZG1pbiIsImlhdCI6MTc0NzI4NzAwNywiZXhwIjoxNzQ3MzczNDA3fQ.g064uDdigVHpkUHHQelQMAgT7YER8Vn8TP4a2OTNpjA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{dataUrl}}/device/check-mac/10:20:30?range=1h&page=1&limit=10",
+					"host": [
+						"{{dataUrl}}"
+					],
+					"path": [
+						"device",
+						"check-mac",
+						"10:20:30"
+					],
+					"query": [
+						{
+							"key": "range",
+							"value": "1h"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Data",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoieWVuaWFkIiwiZW1haWwiOiJlZWNldmFoQGdtYWlsLmNvbSIsImNvbXBhbnlJZCI6MSwicm9sZSI6IlN5c3RlbSBBZG1pbiIsImlhdCI6MTc0NzE2MjUyNywiZXhwIjoxNzQ3MjQ4OTI3fQ.ImsDSxcr78VbzrE0bDzT9TfRj2vxNdzBwUjNHxOJX94",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{dataUrl}}/device/all-data?limit=10&page=1",
+					"host": [
+						"{{dataUrl}}"
+					],
+					"path": [
+						"device",
+						"all-data"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

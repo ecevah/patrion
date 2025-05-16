@@ -1,0 +1,1671 @@
+{
+	"info": {
+		"_postman_id": "1b8af1aa-bcc9-44b6-9109-39c67c06749c",
+		"name": "Core Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41939348"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\":\"eecevah@gmail.com\",\"password\":\"Sifre.1234\"}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\":\"eecevah@gmail.com\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/forgot-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0NzIzMDU2MiwiZXhwIjoxNzQ3MjM0MTYyfQ.pfHUqE0HVW7gmJJ5Zj8u0KYmHdH2bbh6tCKSl9Hp3Kc\",\"newPassword\":\"Sifre.1234\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/reset-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"username\":\"user\",\"password\":\"Sifre.1234\",\"email\":\"user@mail.com\",\"roleId\":5}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/create",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/user/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update by ID",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"username\":\"yeniad\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInVzZXJuYW1lIjoidXNlciIsImVtYWlsIjoidXNlckBtYWlsLmNvbSIsImNvbXBhbnlJZCI6MSwicm9sZSI6IlVzZXIiLCJpYXQiOjE3NDcxNTQxNjEsImV4cCI6MTc0NzI0MDU2MX0.Z77s1CKG32QRZROpmgc5swqZbY-MUAl-YK0dGHRi7nI",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"username\":\"1test\",\"password\":\"Sifre.1234\",\"email\":\"test1@mail.com\",\"roleId\":4,\"companyId\":1}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/create",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/user/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/user/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update by ID",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"username\":\"yeniad\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoieWVuaWFkIiwiZW1haWwiOiJlZWNldmFoQGdtYWlsLmNvbSIsImNvbXBhbnlJZCI6MSwicm9sZSI6IlN5c3RlbSBBZG1pbiIsImlhdCI6MTc0NzI4NzAwNywiZXhwIjoxNzQ3MzczNDA3fQ.g064uDdigVHpkUHHQelQMAgT7YER8Vn8TP4a2OTNpjA",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Role",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"role\":\"User1\",\"can_add_company\":false,\"can_add_user\":false,\"can_assign_device\":false,\"can_view_data\":true,\"can_view_log\":false,\"can_manage_iot\":false}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/role",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/role",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/role/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"role",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update by ID",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <TOKEN>"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"can_add_user\":true}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/role/4",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"role",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <TOKEN>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/role/7",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"role",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoieWVuaWFkIiwiZW1haWwiOiJlZWNldmFoQGdtYWlsLmNvbSIsImNvbXBhbnlJZCI6MSwicm9sZSI6IlN5c3RlbSBBZG1pbiIsImlhdCI6MTc0NzI4NzAwNywiZXhwIjoxNzQ3MzczNDA3fQ.g064uDdigVHpkUHHQelQMAgT7YER8Vn8TP4a2OTNpjA",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <TOKEN>"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"Yeni Şirket\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/company",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/company",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <TOKEN>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/company/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update by ID",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <TOKEN>"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"Güncellenmiş Şirket\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/company/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <TOKEN>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/company/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by My Company",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <TOKEN>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/company/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoieWVuaWFkIiwiZW1haWwiOiJlZWNldmFoQGdtYWlsLmNvbSIsImNvbXBhbnlJZCI6MSwicm9sZSI6IlN5c3RlbSBBZG1pbiIsImlhdCI6MTc0NzI4NzAwNywiZXhwIjoxNzQ3MzczNDA3fQ.g064uDdigVHpkUHHQelQMAgT7YER8Vn8TP4a2OTNpjA",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Device",
+			"item": [
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\":\"Cihaz5\",\"mqtt_topic\":\"topic5\",\"mac\":\"AA:BB:CC:DD:EE:F5\",\"companyId\":1}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/device",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"device"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/device",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"device"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/device/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"device",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update by ID",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\":\"YeniCihaz\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/device/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"device",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/device/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"device",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Authorized Devices",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/device/authorized-devices",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"device",
+										"authorized-devices"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Ckeck Mac",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/device/check-mac/AA:BB:CC:DD:EE:F1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"device",
+										"check-mac",
+										"AA:BB:CC:DD:EE:F1"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoieWVuaWFkIiwiZW1haWwiOiJlZWNldmFoQGdtYWlsLmNvbSIsImNvbXBhbnlJZCI6MSwicm9sZSI6IlN5c3RlbSBBZG1pbiIsImlhdCI6MTc0NzIzMjM2OSwiZXhwIjoxNzQ3MzE4NzY5fQ.eCRZgKNhzPAhs8D1jxEADrnTV45vafAYcv63YG3VjF4",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\":\"Cihaz2\",\"mqtt_topic\":\"topic1\",\"mac\":\"AA:BB:CC:DD:EE:F1\",\"companyId\":1}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/device",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"device"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/device",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"device"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/device/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"device",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update by ID",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\":\"YeniCihaz\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/device/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"device",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/device/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"device",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Authorized Devices",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInVzZXJuYW1lIjoidXNlciIsImVtYWlsIjoidXNlckBtYWlsLmNvbSIsImNvbXBhbnlJZCI6MSwicm9sZSI6IlVzZXIiLCJpYXQiOjE3NDcxNTU5MDYsImV4cCI6MTc0NzI0MjMwNn0.VjWp9YiFtajYhCnt5rt8ADcwwGNl8Z9XRBooryYZ3no",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/device/authorized-devices",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"device",
+										"authorized-devices"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInVzZXJuYW1lIjoidGVzdCIsImVtYWlsIjoidGVzdEBtYWlsLmNvbSIsImNvbXBhbnlJZCI6MSwicm9sZSI6IkNvbXBhbnkgQWRtaW4iLCJpYXQiOjE3NDcxNTc1NDEsImV4cCI6MTc0NzI0Mzk0MX0.IvWPgRGOU37LEAy0Usdwye6BkvKWH6St6pIDwiIBIDw",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Authorized Devices Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/device/authorized-devices",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"device",
+								"authorized-devices"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Device Access",
+			"item": [
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/user-device-access/create/2/4",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user-device-access",
+										"create",
+										"2",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/user-device-access/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user-device-access",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/user-device-access/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user-device-access",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update by ID",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\r\n    \"userId\": 1,\r\n    \"deviceId\": 2\r\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user-device-access/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user-device-access",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user-device-access/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user-device-access",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by User ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user-device-access/user/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user-device-access",
+										"user",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoieWVuaWFkIiwiZW1haWwiOiJlZWNldmFoQGdtYWlsLmNvbSIsImNvbXBhbnlJZCI6MSwicm9sZSI6IlN5c3RlbSBBZG1pbiIsImlhdCI6MTc0NzI4NzAwNywiZXhwIjoxNzQ3MzczNDA3fQ.g064uDdigVHpkUHHQelQMAgT7YER8Vn8TP4a2OTNpjA",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/user-device-access/create/5/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user-device-access",
+										"create",
+										"5",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/user-device-access/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user-device-access",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/user-device-access/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user-device-access",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update by ID",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <TOKEN>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/user-device-access/1/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user-device-access",
+										"1",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInVzZXJuYW1lIjoidGVzdCIsImVtYWlsIjoidGVzdEBtYWlsLmNvbSIsImNvbXBhbnlJZCI6MSwicm9sZSI6IkNvbXBhbnkgQWRtaW4iLCJpYXQiOjE3NDcxNTQ4NjEsImV4cCI6MTc0NzI0MTI2MX0.3V4nuXSVtfG9uImPmDVwaojIzge_jZ1yDZ9w20gb1GA",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Log",
+			"item": [
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/log/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"log",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by User Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/log/user/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"log",
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoieWVuaWFkIiwiZW1haWwiOiJlZWNldmFoQGdtYWlsLmNvbSIsImNvbXBhbnlJZCI6MSwicm9sZSI6IlN5c3RlbSBBZG1pbiIsImlhdCI6MTc0NzI4NzAwNywiZXhwIjoxNzQ3MzczNDA3fQ.g064uDdigVHpkUHHQelQMAgT7YER8Vn8TP4a2OTNpjA",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Get All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/log/all",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"log",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by User Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/log/user/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"log",
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInVzZXJuYW1lIjoidGVzdCIsImVtYWlsIjoidGVzdEBtYWlsLmNvbSIsImNvbXBhbnlJZCI6MSwicm9sZSI6IkNvbXBhbnkgQWRtaW4iLCJpYXQiOjE3NDcyMDEzMjUsImV4cCI6MTc0NzI4NzcyNX0.7VqgmPqSNQtKrQJI6lJoe-jLRaIaiT0cibMOMtYnshs",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}
