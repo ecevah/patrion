@@ -37,9 +37,10 @@ export class DeviceService {
     
     try {
       
+      const mqtt_topic = `${dto.mac}/data`;
       const device = this.deviceRepo.create({
         name: dto.name,
-        mqtt_topic: dto.mqtt_topic,
+        mqtt_topic: mqtt_topic,
         mac: dto.mac,
         company,
         create_by: user,
@@ -160,10 +161,13 @@ export class DeviceService {
       }
       
       
+      let newMac = dto.mac !== undefined ? dto.mac : device.mac;
+      let newMqttTopic = `${newMac}/data`;
+      
       Object.assign(device, {
         name: dto.name !== undefined ? dto.name : device.name,
-        mqtt_topic: dto.mqtt_topic !== undefined ? dto.mqtt_topic : device.mqtt_topic,
-        mac: dto.mac !== undefined ? dto.mac : device.mac,
+        mqtt_topic: newMqttTopic,
+        mac: newMac,
         update_by: user
       });
       

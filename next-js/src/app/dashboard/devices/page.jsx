@@ -28,7 +28,6 @@ export default function DevicesPage() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deviceToEdit, setDeviceToEdit] = useState(null);
   const [editName, setEditName] = useState("");
-  const [editMqttTopic, setEditMqttTopic] = useState("");
   const [editMac, setEditMac] = useState("");
   const [editCompanyId, setEditCompanyId] = useState("");
   const [editLoading, setEditLoading] = useState(false);
@@ -37,7 +36,6 @@ export default function DevicesPage() {
   
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [createName, setCreateName] = useState("");
-  const [createMqttTopic, setCreateMqttTopic] = useState("");
   const [createMac, setCreateMac] = useState("");
   const [createCompanyId, setCreateCompanyId] = useState("");
   const [createLoading, setCreateLoading] = useState(false);
@@ -207,7 +205,6 @@ export default function DevicesPage() {
   const openEditModal = (device) => {
     setDeviceToEdit(device);
     setEditName(device.name);
-    setEditMqttTopic(device.mqtt_topic);
     setEditMac(device.mac);
     setEditCompanyId(device.company.id.toString());
     setEditModalOpen(true);
@@ -218,7 +215,6 @@ export default function DevicesPage() {
     setEditModalOpen(false);
     setDeviceToEdit(null);
     setEditName("");
-    setEditMqttTopic("");
     setEditMac("");
     setEditCompanyId("");
   };
@@ -229,11 +225,6 @@ export default function DevicesPage() {
     if (!deviceToEdit) return;
     if (!editName.trim()) {
       setEditError("Cihaz adı boş olamaz");
-      return;
-    }
-
-    if (!editMqttTopic.trim()) {
-      setEditError("MQTT Topic boş olamaz");
       return;
     }
 
@@ -252,6 +243,7 @@ export default function DevicesPage() {
     }
     
     try {
+      const topic = `${editMac}/data`;
       const response = await fetch(`http://localhost:3232/device/${deviceToEdit.id}`, {
         method: "PATCH",
         headers: {
@@ -260,7 +252,7 @@ export default function DevicesPage() {
         },
         body: JSON.stringify({
           name: editName,
-          mqtt_topic: editMqttTopic,
+          mqtt_topic: topic,
           mac: editMac,
           companyId: parseInt(editCompanyId)
         })
@@ -274,7 +266,6 @@ export default function DevicesPage() {
         setEditModalOpen(false);
         setDeviceToEdit(null);
         setEditName("");
-        setEditMqttTopic("");
         setEditMac("");
         setEditCompanyId("");
       } else {
@@ -291,7 +282,6 @@ export default function DevicesPage() {
   const openCreateModal = () => {
     setCreateModalOpen(true);
     setCreateName("");
-    setCreateMqttTopic("");
     setCreateMac("");
     
     if (companies.length > 0) {
@@ -305,7 +295,6 @@ export default function DevicesPage() {
   const cancelCreate = () => {
     setCreateModalOpen(false);
     setCreateName("");
-    setCreateMqttTopic("");
     setCreateMac("");
     setCreateCompanyId("");
   };
@@ -315,11 +304,6 @@ export default function DevicesPage() {
     
     if (!createName.trim()) {
       setCreateError("Cihaz adı boş olamaz");
-      return;
-    }
-
-    if (!createMqttTopic.trim()) {
-      setCreateError("MQTT Topic boş olamaz");
       return;
     }
 
@@ -343,6 +327,7 @@ export default function DevicesPage() {
     }
     
     try {
+      const topic = `${createMac}/data`;
       const response = await fetch(`http://localhost:3232/device`, {
         method: "POST",
         headers: {
@@ -351,7 +336,7 @@ export default function DevicesPage() {
         },
         body: JSON.stringify({
           name: createName,
-          mqtt_topic: createMqttTopic,
+          mqtt_topic: topic,
           mac: createMac,
           companyId: parseInt(createCompanyId)
         })
@@ -364,7 +349,6 @@ export default function DevicesPage() {
         fetchDevices(token);
         setCreateModalOpen(false);
         setCreateName("");
-        setCreateMqttTopic("");
         setCreateMac("");
       } else {
         setCreateError(data.message || "Cihaz oluşturulamadı");
@@ -621,10 +605,6 @@ export default function DevicesPage() {
                 <input type="text" value={editName} onChange={(e) => setEditName(e.target.value)} className="w-full p-2 bg-dark-200 border border-border-primary rounded-lg text-text-primary focus:ring-2 focus:ring-accent-primary" required />
               </div>
               <div>
-                <label className="block text-sm font-medium text-text-secondary mb-1">MQTT Topic*</label>
-                <input type="text" value={editMqttTopic} onChange={(e) => setEditMqttTopic(e.target.value)} className="w-full p-2 bg-dark-200 border border-border-primary rounded-lg text-text-primary focus:ring-2 focus:ring-accent-primary" required />
-              </div>
-              <div>
                 <label className="block text-sm font-medium text-text-secondary mb-1">MAC Adresi*</label>
                 <input type="text" value={editMac} onChange={(e) => setEditMac(e.target.value)} className="w-full p-2 bg-dark-200 border border-border-primary rounded-lg text-text-primary focus:ring-2 focus:ring-accent-primary" required />
               </div>
@@ -650,10 +630,6 @@ export default function DevicesPage() {
               <div>
                 <label className="block text-sm font-medium text-text-secondary mb-1">Cihaz Adı*</label>
                 <input type="text" value={createName} onChange={(e) => setCreateName(e.target.value)} className="w-full p-2 bg-dark-200 border border-border-primary rounded-lg text-text-primary focus:ring-2 focus:ring-accent-primary" required />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-text-secondary mb-1">MQTT Topic*</label>
-                <input type="text" value={createMqttTopic} onChange={(e) => setCreateMqttTopic(e.target.value)} className="w-full p-2 bg-dark-200 border border-border-primary rounded-lg text-text-primary focus:ring-2 focus:ring-accent-primary" required />
               </div>
               <div>
                 <label className="block text-sm font-medium text-text-secondary mb-1">MAC Adresi*</label>
